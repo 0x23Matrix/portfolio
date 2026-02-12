@@ -356,6 +356,77 @@ h1 {
             }
         }
 
+        /* 图表 Tab 切换 */
+        .chart-panel {
+            display: none;
+        }
+        .chart-panel.show {
+            display: block;
+        }
+        .chart-tab {
+            background: transparent;
+            color: var(--text-secondary);
+            border: 1px solid transparent;
+            cursor: pointer;
+        }
+        .chart-tab:hover {
+            background: rgba(168, 112, 63, 0.08);
+            color: var(--accent-terracotta);
+        }
+        .chart-tab.active {
+            background: rgba(168, 112, 63, 0.15);
+            color: var(--accent-terracotta);
+            border-color: rgba(168, 112, 63, 0.3);
+        }
+        .dialogue-tab {
+            background: transparent;
+            color: var(--text-secondary);
+            border: 1px solid transparent;
+            cursor: pointer;
+        }
+        .dialogue-tab:hover { background: rgba(168, 112, 63, 0.08); color: var(--accent-terracotta); }
+        .dialogue-tab.active { background: rgba(168, 112, 63, 0.15); color: var(--accent-terracotta); border-color: rgba(168, 112, 63, 0.3); }
+        .ddx-sub-tab { background: transparent; border: none; color: var(--text-muted); cursor: pointer; }
+        .ddx-sub-tab:hover { color: var(--accent-terracotta); }
+        .ddx-sub-tab.active { color: var(--accent-terracotta); font-weight: 600; }
+        .ddx-sub-panel { display: block; }
+        .ddx-sub-panel.hidden { display: none; }
+        /* 逗逗小滴 Tab 面板 */
+        .ddx-panel { display: none; }
+        .ddx-panel.show { display: block; }
+        /* Query 改写 2×2 代码块 */
+        .query-code-block {
+            background: rgba(0,0,0,0.03);
+            border: 1px solid var(--card-border);
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.8rem;
+            overflow: hidden;
+            transition: all 0.3s ease;
+        }
+        .query-code-block:hover {
+            border-color: var(--accent-terracotta);
+            box-shadow: 0 2px 8px rgba(168, 112, 63, 0.12);
+        }
+        .query-code-block-tag {
+            font-family: 'Noto Sans SC', sans-serif;
+            font-size: 0.7rem;
+            font-weight: 600;
+            letter-spacing: 0.05em;
+            padding: 0.25rem 0.5rem;
+            display: inline-block;
+        }
+        .query-code-block-tag.tag-base { background: rgba(168, 112, 63, 0.1); color: #A8703F; }
+        .query-code-block-tag.tag-business { background: rgba(92, 97, 77, 0.15); color: #5C614D; }
+        .query-code-block-tag.tag-didi { background: rgba(168, 112, 63, 0.15); color: #A8703F; }
+        .query-code-block-tag.tag-time { background: rgba(168, 112, 63, 0.12); color: #A8703F; }
+        .query-code-line {
+            padding: 0.2rem 0.75rem;
+            border-left: 2px solid var(--accent-terracotta);
+            color: var(--text-secondary);
+            font-size: 0.75rem;
+        }
+        .query-code-line:nth-child(even) { background: rgba(255,255,255,0.4); }
+
         /* Pipeline flow */
         .pipeline-step {
             opacity: 0;
@@ -403,6 +474,18 @@ h1 {
             border-bottom: 1px solid var(--border-rational);
         }
         .arch-layer-vertical:last-child { border-bottom: none; }
+        @media (min-width: 1024px) {
+            .arch-vertical.arch-grid-lg {
+                display: grid;
+                grid-template-columns: repeat(2, 1fr);
+                gap: 1rem;
+            }
+            .arch-vertical.arch-grid-lg::before { display: none; }
+            .arch-vertical.arch-grid-lg .arch-layer-vertical { border-bottom: 1px solid var(--border-rational); }
+            .arch-vertical.arch-grid-lg .arch-layer-vertical:nth-child(3),
+            .arch-vertical.arch-grid-lg .arch-layer-vertical:nth-child(4) { border-bottom: none; }
+            .arch-vertical.arch-grid-lg .arch-layer-vertical:nth-child(odd) { border-right: 1px solid var(--border-rational); }
+        }
         .arch-layer-node {
             flex-shrink: 0;
             width: 2rem;
@@ -1006,6 +1089,136 @@ h1 {
                 font-size: 0.7rem;
             }
         }
+
+        /* 横轴时间线 - 工作经历 */
+        .timeline-horizontal {
+            position: relative;
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            gap: 1rem;
+            padding: 2rem 0 0;
+        }
+        .timeline-horizontal::before {
+            content: '';
+            position: absolute;
+            left: 5%;
+            right: 5%;
+            top: 2.5rem;
+            height: 2px;
+            background: linear-gradient(to right, var(--accent-terracotta), var(--accent-olive));
+            opacity: 0.5;
+        }
+        .timeline-node {
+            flex: 1;
+            min-width: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            position: relative;
+            z-index: 2;
+        }
+        .timeline-node-btn {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 1rem;
+            cursor: pointer;
+            background: var(--glass-bg);
+            backdrop-filter: blur(var(--glass-blur));
+            border: 1px solid var(--card-border);
+            transition: all 0.3s ease;
+            width: 100%;
+            text-align: center;
+        }
+        .timeline-node-btn:hover {
+            border-color: var(--accent-terracotta);
+            box-shadow: 0 4px 12px rgba(168, 112, 63, 0.15);
+        }
+        .timeline-node-btn.active {
+            border-color: var(--accent-terracotta);
+            background: rgba(168, 112, 63, 0.08);
+        }
+        .timeline-node-dot {
+            width: 1rem;
+            height: 1rem;
+            background: var(--accent-terracotta);
+            border: 3px solid var(--bg-primary);
+        }
+        .timeline-node.education .timeline-node-dot {
+            background: var(--accent-olive);
+        }
+        .timeline-node-date {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.7rem;
+            color: var(--text-muted);
+            line-height: 1.3;
+        }
+        .timeline-node-title {
+            font-weight: 700;
+            font-size: 0.95rem;
+            color: var(--text-primary);
+        }
+        .timeline-node-key {
+            font-size: 0.8rem;
+            color: var(--accent-terracotta);
+            font-weight: 600;
+        }
+        .timeline-node.education .timeline-node-key {
+            color: var(--accent-olive);
+        }
+        .timeline-detail {
+            display: none;
+            margin-top: 2rem;
+            animation: detailExpand 0.4s ease-out;
+        }
+        .timeline-detail.show {
+            display: block;
+        }
+        @keyframes detailExpand {
+            from { opacity: 0; transform: translateY(-10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        @media (max-width: 768px) {
+            .timeline-horizontal {
+                flex-direction: column;
+                align-items: stretch;
+            }
+            .timeline-horizontal::before {
+                left: 1.5rem;
+                top: 0;
+                bottom: 0;
+                width: 2px;
+                height: auto;
+                background: linear-gradient(to bottom, var(--accent-terracotta), var(--accent-olive));
+            }
+            .timeline-node {
+                flex-direction: row;
+                padding-left: 3rem;
+                position: relative;
+                gap: 1rem;
+            }
+            .timeline-node::before {
+                content: '';
+                position: absolute;
+                left: 0.6rem;
+                top: 1.5rem;
+                width: 1rem;
+                height: 1rem;
+                background: var(--accent-terracotta);
+                border: 2px solid var(--bg-primary);
+                z-index: 2;
+            }
+            .timeline-node.education::before {
+                background: var(--accent-olive);
+            }
+            .timeline-node-btn {
+                flex-direction: row;
+                justify-content: flex-start;
+                text-align: left;
+            }
+        }
     </style>
 </head>
 <body>
@@ -1024,12 +1237,12 @@ h1 {
         <!-- Floating Sidebar Navigation -->
         <nav class="floating-sidebar" id="floatingSidebar">
             <a href="#hero" class="sidebar-item" data-section="hero">核心价值</a>
+            <a href="#background" class="sidebar-item" data-section="background">工作经历</a>
             <a href="#project1" class="sidebar-item" data-section="project1">搜索质量升级</a>
-            <a href="#project2" class="sidebar-item" data-section="project2">营销Agent从0到1</a>
+            <a href="#project2" class="sidebar-item" data-section="project2">逗逗小滴营销</a>
             <a href="#project3" class="sidebar-item" data-section="project3">高考志愿Agent</a>
             <a href="#methodology" class="sidebar-item" data-section="methodology">评测体系</a>
             <a href="#skills" class="sidebar-item" data-section="skills">技能矩阵</a>
-            <a href="#background" class="sidebar-item" data-section="background">工作经历</a>
         </nav>
 
         <!-- Sticky Navigation -->
@@ -1065,15 +1278,15 @@ h1 {
                             <span class="mono text-xs text-[#A8703F] tracking-wider">AI STRATEGY PRODUCT MANAGER</span>
                         </div>
                         
-                        <!-- Name（连续点击 5 次彩蛋）+ Know more（抽小纸条） -->
-                        <div class="flex items-end gap-4 flex-wrap">                            <h1 class="text-5xl sm:text-6xl lg:text-7xl font-black tracking-tight cursor-pointer select-none" id="heroName" title="试试多点点">
-                                赵鑫
+                        <!-- Name（连续点击 5 次彩蛋） -->
+                        <div class="flex items-end gap-2 sm:gap-4 flex-wrap">
+                            <h1 class="text-2xl sm:text-3xl lg:text-4xl font-bold tracking-normal cursor-pointer select-none" id="heroName" title="试试多点点">
+                                Hi 我是赵鑫
                             </h1>
-                            <button type="button" id="slipKnowMore" class="inline-flex items-center gap-2 px-4 py-2.5 bg-[#A8703F]/20 border-2 border-[#A8703F] text-[#A8703F] hover:bg-[#A8703F]/30 font-semibold text-base transition-all">know more <span class="text-lg">→</span></button>
                         </div>
-                        
+
                         <!-- Introduction -->
-                        <p class="text-lg sm:text-xl text-[#2C2C2C] font-light leading-relaxed max-w-xl">
+                        <p class="text-base sm:text-lg text-[#2C2C2C] font-light leading-relaxed max-w-xl">
                             3年 AI 策略产品经理经验，深耕<span class="text-[#A8703F] font-medium">Agent落地全链路策略</span><br>
                             及<span class="text-[#A8703F] font-medium">垂类模型微调</span>、<span class="text-[#A8703F] font-medium">幻觉治理</span>、<span class="text-[#A8703F] font-medium">RAG 知识库搭建。</span><br>
                             <span class="text-[#5C614D] font-medium">主导模型搜索优化、工具、人格化Agent从0到1构建等核心项目。</span>
@@ -1095,12 +1308,10 @@ h1 {
                     
                     <!-- Right: Profile Photo（toast 挂在此处上方居中） -->
                     <div class="hero-right relative" id="heroRight">
-                        <!-- 方式1: 使用本地图片 - 将照片放在同文件夹，修改下面的文件名 -->
-                        <!-- 方式2: 使用在线URL - 将 src 改为完整的图片URL -->
-                        <!-- 方式3: 使用base64 - 将 src 改为 "data:image/jpeg;base64,你的base64编码" -->
-                        <div class="profile-photo-container cursor-pointer" id="profilePhotoContainer">
+                        <div class="profile-photo-container cursor-pointer relative" id="profilePhotoContainer">
                             <img src="photo.jpg" alt="赵鑫" class="profile-photo" id="profilePhoto" 
                                  onerror="this.style.display='none'; this.parentElement.style.display='none';">
+                            <button type="button" id="slipKnowMore" class="absolute -bottom-2 -right-2 sm:-bottom-3 sm:-right-3 inline-flex items-center gap-1.5 sm:gap-2 px-3 py-2 sm:px-4 sm:py-2.5 bg-[#A8703F]/90 border-2 border-[#A8703F] text-white hover:bg-[#A8703F] font-semibold text-sm sm:text-base transition-all whitespace-nowrap shadow-lg">know more <span class="text-base sm:text-lg">↗</span></button>
                         </div>
                     </div>
                 </div>
@@ -1155,7 +1366,7 @@ h1 {
                                 <div class="progress-bar" style="width: 54%; animation-delay: 0.2s;"></div>
                             </div>
                             <div class="mt-4 pt-4 border-t border-[#A8703F]/20">
-                                <div class="mono text-xs text-[#5A5A5A]">项目: 营销 Agent</div>
+                                <div class="mono text-xs text-[#5A5A5A]">项目: 逗逗小滴</div>
                             </div>
                         </button>
 
@@ -1194,6 +1405,125 @@ h1 {
             </div>
         </section>
 
+        <!-- 工作经历 - 横轴时间线 -->
+        <section id="background" class="py-20 px-4 sm:px-6 lg:px-8 reveal">
+            <div class="max-w-7xl mx-auto">
+                <div class="mb-12">
+                    <div class="mono text-xs text-[#6B6B6B] mb-3 tracking-wider">BACKGROUND</div>
+                    <h2 class="text-3xl sm:text-4xl font-black mb-4">工作与教育经历</h2>
+                    <p class="text-[#4A4A4A]">点击节点展开详情</p>
+                </div>
+
+                <div class="timeline-horizontal" id="timelineHorizontal">
+                    <!-- 大连理工大学 -->
+                    <div class="timeline-node education">
+                        <button type="button" class="timeline-node-btn" data-expand="detail-dut">
+                            <div class="timeline-node-dot"></div>
+                            <img src="大连理工大学-logo-512px.png" alt="大连理工大学" class="h-6 w-6 sm:h-7 sm:w-7 object-contain opacity-80 flex-shrink-0">
+                            <div class="timeline-node-date">2017.09-2021.06</div>
+                            <div class="timeline-node-title">大连理工大学</div>
+                            <div class="timeline-node-key">国际经济与贸易 · 学士</div>
+                        </button>
+                    </div>
+
+                    <!-- 浙江大学 -->
+                    <div class="timeline-node education">
+                        <button type="button" class="timeline-node-btn" data-expand="detail-zju">
+                            <div class="timeline-node-dot"></div>
+                            <img src="浙江大学-logo-512px.png" alt="浙江大学" class="h-6 w-6 sm:h-7 sm:w-7 object-contain opacity-80 flex-shrink-0">
+                            <div class="timeline-node-date">2021.09-2023.06</div>
+                            <div class="timeline-node-title">浙江大学</div>
+                            <div class="timeline-node-key">国际贸易学 · 硕士</div>
+                        </button>
+                    </div>
+
+                    <!-- 百度 -->
+                    <div class="timeline-node">
+                        <button type="button" class="timeline-node-btn" data-expand="detail-baidu">
+                            <div class="timeline-node-dot"></div>
+                            <img src="baidu.png" alt="百度" class="h-6 w-6 sm:h-7 sm:w-7 object-contain opacity-80 flex-shrink-0">
+                            <div class="timeline-node-date">2023.06-2025.05</div>
+                            <div class="timeline-node-title">百度</div>
+                            <div class="timeline-node-key">AI 搜索产品经理 · 高考 Agent 从0到1</div>
+                        </button>
+                    </div>
+
+                    <!-- 滴滴出行 -->
+                    <div class="timeline-node">
+                        <button type="button" class="timeline-node-btn" data-expand="detail-didi">
+                            <div class="timeline-node-dot"></div>
+                            <img src="didi.png" alt="滴滴出行" class="h-6 w-6 sm:h-7 sm:w-7 object-contain opacity-80 flex-shrink-0">
+                            <div class="flex flex-col sm:flex-row items-center gap-1 sm:gap-2">
+                                <div class="timeline-node-date">2025.06至今</div>
+                                <span class="px-2 py-0.5 bg-[#A8703F]/20 border border-[#A8703F]/30 text-xs font-semibold text-[#A8703F]">now</span>
+                            </div>
+                            <div class="timeline-node-title">滴滴出行</div>
+                            <div class="timeline-node-key">RAG 搜索底座 · 幻觉治理 · Agent 建设</div>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- 详情面板：全宽展示，点击节点后展开 -->
+                <div class="mt-8">
+                    <div class="timeline-detail glass-card p-6 border-l-4 border-[#5C614D] w-full" id="detail-dut">
+                        <div class="flex items-start gap-4">
+                            <div class="w-12 h-12 bg-[#5C614D]/20 border border-[#5C614D]/30 flex items-center justify-center flex-shrink-0">
+                                <span class="text-2xl">🎓</span>
+                            </div>
+                            <div class="flex-1">
+                                <h3 class="text-xl font-bold text-[#2C2C2C] mb-1">大连理工大学</h3>
+                                <div class="text-[#5C614D] font-semibold mb-2">国际经济与贸易 · 学士</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="timeline-detail glass-card p-6 border-l-4 border-[#5C614D] w-full" id="detail-zju">
+                        <div class="flex items-start gap-4">
+                            <div class="w-12 h-12 bg-[#5C614D]/20 border border-[#5C614D]/30 flex items-center justify-center flex-shrink-0">
+                                <span class="text-2xl">🎓</span>
+                            </div>
+                            <div class="flex-1">
+                                <h3 class="text-xl font-bold text-[#2C2C2C] mb-1">浙江大学</h3>
+                                <div class="text-[#5C614D] font-semibold mb-1">国际贸易学 · 硕士</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="timeline-detail glass-card p-6 border-l-4 border-[#A8703F] w-full" id="detail-baidu">
+                        <h3 class="text-2xl font-bold text-[#2C2C2C] mb-3">百度</h3>
+                        <div class="text-[#A8703F] font-semibold mb-2">搜索产品部 & 文库教育部 · AI 搜索产品经理</div>
+                        <div class="text-[#4A4A4A] leading-relaxed mb-4">
+                            负责百度搜索 S 级 AI 标杆项目"高考 Agent"的从0到1建设,主导多项 AIGC 内容生产与商业化创新。实现单日 DAU 190万+,用户渗透率40%+。
+                        </div>
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            <div class="bg-white/60 p-4 border border-[#A8703F]/10">
+                                <div class="text-sm text-[#6B6B6B] mb-1">核心成果</div>
+                                <div class="text-base text-[#2C2C2C]">高考志愿 Agent 从0到1,成为百度智能体评估标杆</div>
+                            </div>
+                            <div class="bg-white/60 p-4 border border-[#A8703F]/10">
+                                <div class="text-sm text-[#6B6B6B] mb-1">商业化</div>
+                                <div class="text-base text-[#2C2C2C]">AI 教辅产品全年销量突破 1000 万元</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="timeline-detail glass-card p-6 border-l-4 border-[#A8703F] w-full" id="detail-didi">
+                        <div class="flex items-center gap-3 mb-3 flex-wrap">
+                            <h3 class="text-2xl font-bold text-[#2C2C2C]">滴滴出行</h3>
+                            <span class="mono text-sm text-[#6B6B6B]">2025.06 至今</span>
+                            <span class="px-2 py-1 bg-[#A8703F]/10 border border-[#A8703F]/30 text-xs font-semibold text-[#A8703F]">Current</span>
+                        </div>
+                        <div class="text-[#A8703F] font-semibold mb-2">Llab · AI 策略产品经理</div>
+                        <div class="text-[#4A4A4A] leading-relaxed mb-4">
+                            负责滴滴 Agent 联网搜索底座(RAG)建设,解决 LLM 在出行场景下的事实性与时效性问题。主导 RAG 全链路策略优化、幻觉治理体系建设、双 Agent 自动化评测平台搭建。
+                        </div>
+                        <div class="flex flex-wrap gap-2">
+                            <span class="px-3 py-1 bg-white/70 border border-[#A8703F]/20 text-xs text-[#4A4A4A]">RAG 优化</span>
+                            <span class="px-3 py-1 bg-white/70 border border-[#A8703F]/20 text-xs text-[#4A4A4A]">幻觉治理</span>
+                            <span class="px-3 py-1 bg-white/70 border border-[#A8703F]/20 text-xs text-[#4A4A4A]">Agent 建设</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
         <!-- Project 1: RAG Search Optimization -->
         <section id="project1" class="py-20 px-4 sm:px-6 lg:px-8 reveal section-with-incomplete">
             <div class="max-w-7xl mx-auto">
@@ -1225,10 +1555,23 @@ h1 {
                     </div>
                 </div>
 
-                <!-- Chart: 质量爬坡 -->
-                <div class="glass-card p-8 mb-8">
-                    <h3 class="text-xl font-bold mb-6">搜索效果迭代爬坡图</h3>
-                    <div class="line-chart-container">
+                <!-- 图表区域：切换框 + 三个图表 -->
+                <div class="glass-card p-8 mb-8" id="project1ChartArea">
+                    <div class="flex items-center justify-between flex-wrap gap-4 mb-6">
+                        <h3 class="text-xl font-bold">搜索效果数据</h3>
+                        <div class="flex gap-0 border border-[#A8703F]/20">
+                            <button type="button" class="chart-tab px-4 py-2 text-sm font-medium transition-all active" data-chart="chart-quality">搜索 3 分率</button>
+                            <button type="button" class="chart-tab px-4 py-2 text-sm font-medium transition-all" data-chart="chart-query">Query 改写</button>
+                            <button type="button" class="chart-tab px-4 py-2 text-sm font-medium transition-all" data-chart="chart-source">双信源召回</button>
+                        </div>
+                    </div>
+
+                    <!-- 图表 1：搜索 3 分率爬坡 -->
+                    <div class="chart-panel show" id="chart-quality">
+                        <div class="grid grid-cols-1 lg:grid-cols-[1fr_280px] gap-8">
+                        <div>
+                        <h4 class="text-lg font-semibold text-[#4A4A4A] mb-4">搜索效果迭代爬坡图</h4>
+                        <div class="line-chart-container">
                         <svg viewBox="0 0 800 400" class="w-full h-full">
                             <!-- Gradient definition -->
                             <defs>
@@ -1321,9 +1664,162 @@ h1 {
                             </g>
                             <g class="line-chart-label">
                                 <text x="700" y="380" text-anchor="middle" fill="#2C2C2C" font-size="14" font-weight="600">Stage 5</text>
-                                <text x="700" y="395" text-anchor="middle" fill="#4A4A4A" font-size="12">输出优化</text>
+                                        <text x="700" y="395" text-anchor="middle" fill="#4A4A4A" font-size="12">输出优化</text>
                             </g>
                         </svg>
+                    </div>
+                        </div>
+                        <div class="glass-card p-6 border-l-4 border-[#A8703F] self-start">
+                            <h4 class="text-base font-bold text-[#2C2C2C] mb-4">核心检索指标提升</h4>
+                            <ul class="space-y-3 text-sm">
+                                <li class="flex items-center justify-between gap-4">
+                                    <span class="text-[#4A4A4A]">准确率</span>
+                                    <span class="font-bold text-[#A8703F] mono">78% → 94%</span>
+                                </li>
+                                <li class="flex items-center justify-between gap-4">
+                                    <span class="text-[#4A4A4A]">召回率</span>
+                                    <span class="font-bold text-[#A8703F] mono">71% → 89%</span>
+                                </li>
+                                <li class="flex items-center justify-between gap-4">
+                                    <span class="text-[#4A4A4A]">F1-Score</span>
+                                    <span class="font-bold text-[#A8703F] mono">0.74 → 0.91</span>
+                                </li>
+                            </ul>
+                        </div>
+                        </div>
+                    </div>
+
+                    <!-- 图表 2：Query 改写 2×2 代码块 + 准确率曲线 -->
+                    <div class="chart-panel" id="chart-query">
+                        <h4 class="text-lg font-semibold text-[#4A4A4A] mb-4">Query 改写前后对比</h4>
+                        <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                            <div>
+                                <div class="mb-4 p-3 bg-white/60 border-l-4 border-[#A8703F]">
+                                    <div class="text-xs text-[#6B6B6B] mono mb-1">原始 Query（用户输入）</div>
+                                    <div class="text-sm text-[#2C2C2C] mono">"周末想带孩子去欢乐谷,门票多少钱?有优惠吗?"</div>
+                                </div>
+                                <div class="text-xs text-[#6B6B6B] mono mb-3">改写后的多维检索 Query</div>
+                                <div class="grid grid-cols-2 gap-3">
+                                    <div class="query-code-block">
+                                        <div class="px-3 py-2 border-b border-[#A8703F]/20 bg-white/40 flex items-center justify-between flex-wrap gap-1">
+                                            <span class="font-semibold text-[#A8703F] text-sm">门票信息</span>
+                                            <span class="query-code-block-tag tag-base">基础需求</span>
+                                        </div>
+                                        <div class="query-code-line">"北京欢乐谷 门票价格 2025最新"</div>
+                                        <div class="query-code-line">"欢乐谷 儿童票 学生票 优惠政策"</div>
+                                        <div class="query-code-line">"欢乐谷 周末 节假日 票价"</div>
+                                    </div>
+                                    <div class="query-code-block">
+                                        <div class="px-3 py-2 border-b border-[#A8703F]/20 bg-white/40 flex items-center justify-between flex-wrap gap-1">
+                                            <span class="font-semibold text-[#A8703F] text-sm">优惠活动</span>
+                                            <span class="query-code-block-tag tag-business">业务协同</span>
+                                        </div>
+                                        <div class="query-code-line">"欢乐谷 滴滴出行 联合优惠"</div>
+                                        <div class="query-code-line">"北京景区 亲子套票 团购优惠"</div>
+                                        <div class="query-code-line">"欢乐谷 2月 最新促销活动"</div>
+                                    </div>
+                                    <div class="query-code-block">
+                                        <div class="px-3 py-2 border-b border-[#A8703F]/20 bg-white/40 flex items-center justify-between flex-wrap gap-1">
+                                            <span class="font-semibold text-[#A8703F] text-sm">出行配套</span>
+                                            <span class="query-code-block-tag tag-didi">滴滴核心</span>
+                                        </div>
+                                        <div class="query-code-line">"三里屯到欢乐谷 打车费用时间"</div>
+                                        <div class="query-code-line">"欢乐谷 停车场 收费标准"</div>
+                                        <div class="query-code-line">"欢乐谷附近 亲子餐厅推荐"</div>
+                                    </div>
+                                    <div class="query-code-block">
+                                        <div class="px-3 py-2 border-b border-[#A8703F]/20 bg-white/40 flex items-center justify-between flex-wrap gap-1">
+                                            <span class="font-semibold text-[#A8703F] text-sm">实时攻略</span>
+                                            <span class="query-code-block-tag tag-time">时效性</span>
+                                        </div>
+                                        <div class="query-code-line">"欢乐谷 周末 排队情况 实时"</div>
+                                        <div class="query-code-line">"欢乐谷 热门项目 游玩攻略 2025"</div>
+                                        <div class="query-code-line">"北京 本周末 天气 适合游玩吗"</div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div>
+                                <div class="text-sm font-semibold text-[#4A4A4A] mb-4">意图识别准确率提升</div>
+                                <div class="line-chart-container" style="height: 280px;">
+                                    <svg viewBox="0 0 400 280" class="w-full h-full">
+                                        <defs>
+                                            <linearGradient id="lineGradientQuery" x1="0%" y1="0%" x2="100%" y2="0%">
+                                                <stop offset="0%" style="stop-color:#A8703F;stop-opacity:1" />
+                                                <stop offset="100%" style="stop-color:#5C614D;stop-opacity:1" />
+                                            </linearGradient>
+                                        </defs>
+                                        <g opacity="0.15">
+                                            <line x1="50" y1="30" x2="50" y2="230" stroke="#A8703F" stroke-width="1"/>
+                                            <line x1="50" y1="230" x2="350" y2="230" stroke="#A8703F" stroke-width="1"/>
+                                        </g>
+                                        <text x="35" y="235" text-anchor="end" fill="#4A4A4A" font-size="11" class="mono">0%</text>
+                                        <text x="35" y="100" text-anchor="end" fill="#4A4A4A" font-size="11" class="mono">50%</text>
+                                        <text x="35" y="35" text-anchor="end" fill="#4A4A4A" font-size="11" class="mono">100%</text>
+                                        <path fill="none" stroke="url(#lineGradientQuery)" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" stroke-dasharray="500" stroke-dashoffset="500" style="animation: lineDraw 1.5s ease-out forwards;"
+                                              d="M 50,195 L 175,150 L 350,55"/>
+                                        <g class="line-chart-point">
+                                            <circle cx="50" cy="195" r="6" fill="#A8703F" stroke="#FAF3E9" stroke-width="2"/>
+                                            <text x="50" y="215" text-anchor="middle" fill="#A8703F" font-size="12" font-weight="bold">65%</text>
+                                        </g>
+                                        <g class="line-chart-point">
+                                            <circle cx="175" cy="150" r="6" fill="#A8703F" stroke="#FAF3E9" stroke-width="2"/>
+                                            <text x="175" y="215" text-anchor="middle" fill="#A8703F" font-size="12" font-weight="bold">78%</text>
+                                        </g>
+                                        <g class="line-chart-point">
+                                            <circle cx="350" cy="55" r="6" fill="#5C614D" stroke="#FAF3E9" stroke-width="2"/>
+                                            <text x="350" y="215" text-anchor="middle" fill="#5C614D" font-size="12" font-weight="bold">92%</text>
+                                        </g>
+                                        <text x="50" y="250" text-anchor="middle" fill="#4A4A4A" font-size="11">Baseline</text>
+                                        <text x="175" y="250" text-anchor="middle" fill="#4A4A4A" font-size="11">单维改写</text>
+                                        <text x="350" y="250" text-anchor="middle" fill="#4A4A4A" font-size="11">多维改写</text>
+                                    </svg>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 图表 3：双信源召回对比表格 -->
+                    <div class="chart-panel" id="chart-source">
+                        <h4 class="text-lg font-semibold text-[#4A4A4A] mb-4">双信源召回效果对比</h4>
+                        <p class="text-sm text-[#6B6B6B] mb-6">基于相关性 / 时效性 / 权威性三维评估筛选信源，解决信源召回质量问题</p>
+                        <div class="overflow-x-auto">
+                            <table class="w-full border-collapse text-sm">
+                                <thead>
+                                    <tr class="border-b-2 border-[#A8703F]/30">
+                                        <th class="text-left py-4 px-4 font-semibold text-[#2C2C2C]">指标</th>
+                                        <th class="text-center py-4 px-4 font-semibold text-[#2C2C2C]">优化前</th>
+                                        <th class="text-center py-4 px-4 font-semibold text-[#2C2C2C]">优化后</th>
+                                        <th class="text-center py-4 px-4 font-semibold text-[#2C2C2C] w-24">变化</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr class="border-b border-[#A8703F]/15 hover:bg-white/30">
+                                        <td class="py-4 px-4 text-[#2C2C2C]">低质信源占比</td>
+                                        <td class="py-4 px-4 text-center text-[#9A9A9A]">40%</td>
+                                        <td class="py-4 px-4 text-center font-bold text-[#A8703F] bg-[#5C614D]/5">5%</td>
+                                        <td class="py-4 px-4 text-center text-[#5C614D] text-xs">↓ 87.5%</td>
+                                    </tr>
+                                    <tr class="border-b border-[#A8703F]/15 hover:bg-white/30">
+                                        <td class="py-4 px-4 text-[#2C2C2C]">权威源覆盖率</td>
+                                        <td class="py-4 px-4 text-center text-[#9A9A9A]">35%</td>
+                                        <td class="py-4 px-4 text-center font-bold text-[#A8703F] bg-[#5C614D]/5">78%</td>
+                                        <td class="py-4 px-4 text-center text-[#5C614D] text-xs">↑ 122%</td>
+                                    </tr>
+                                    <tr class="border-b border-[#A8703F]/15 hover:bg-white/30">
+                                        <td class="py-4 px-4 text-[#2C2C2C]">实时性达标率</td>
+                                        <td class="py-4 px-4 text-center text-[#9A9A9A]">52%</td>
+                                        <td class="py-4 px-4 text-center font-bold text-[#A8703F] bg-[#5C614D]/5">89%</td>
+                                        <td class="py-4 px-4 text-center text-[#5C614D] text-xs">↑ 71%</td>
+                                    </tr>
+                                    <tr class="hover:bg-white/30">
+                                        <td class="py-4 px-4 text-[#2C2C2C]">平均响应时间</td>
+                                        <td class="py-4 px-4 text-center text-[#9A9A9A]">850ms</td>
+                                        <td class="py-4 px-4 text-center font-bold text-[#A8703F] bg-[#5C614D]/5">320ms</td>
+                                        <td class="py-4 px-4 text-center text-[#5C614D] text-xs">↓ 62%</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
                     </div>
                 </div>
 
@@ -1348,95 +1844,295 @@ h1 {
             </div>
         </section>
 
-        <!-- Project 2: 营销 Agent 从0到1 -->
+        <!-- Project 2: 「逗逗小滴」营销 Agent -->
         <section id="project2" class="py-20 px-4 sm:px-6 lg:px-8 reveal">
             <div class="max-w-7xl mx-auto">
                 <div class="mb-12">
                     <div class="inline-flex items-center gap-2 px-3 py-1.5 bg-[#A8703F]/10 border border-[#A8703F]/20 mb-4" style="border-radius: 0;">
-                        <span class="mono text-xs text-[#A8703F] tracking-wider">PROJECT 02 · 2025.10</span>
+                        <span class="mono text-xs text-[#A8703F] tracking-wider">PROJECT 02 · 2025.Q4</span>
                     </div>
-                    <h2 class="text-3xl sm:text-5xl font-black mb-4">营销 Agent 从0到1</h2>
-                    <p class="text-xl text-[#4A4A4A]">出行场景 - 个性化 + 奖励发券闭环</p>
+                    <h2 class="text-3xl sm:text-5xl font-black mb-4">「逗逗小滴」营销 Agent</h2>
+                    <p class="text-xl text-[#4A4A4A] mb-2">小滴业务线 · 用 AI 做有温度的营销</p>
+                    <p class="text-sm text-[#6B6B6B]">项目角色：策略 PM · 主导产品与活动设计、策略迭代与幻觉治理</p>
                 </div>
 
-                <!-- 项目背景 + 产品视角：两列并列 -->
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
-                    <div class="glass-card p-6 border-l-4 border-[#A8703F] h-full flex flex-col">
-                        <h3 class="text-lg font-bold text-[#A8703F] mb-3">项目背景</h3>
-                        <p class="text-[#2C2C2C] text-sm leading-relaxed flex-1">
-                            AI 出行产品用户教育较难，自然增长受阻。希望通过 Agent 实现用户自然语言打车教育、奖励发券、用券叫车的闭环，带动留存与完单。
-                        </p>
+                <!-- 背景 + 结果：直接展示 -->
+                <div class="glass-card p-6 sm:p-8 mb-6">
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                        <div class="border-l-4 border-red-400/60 pl-6">
+                            <div class="mono text-xs text-[#6B6B6B] tracking-wider mb-3">BACKGROUND · 业务困境</div>
+                            <p class="text-sm text-[#6B6B6B] mb-4">2025.Q4 · 小滴业务线用户活跃度停滞</p>
+                            <div class="grid grid-cols-3 gap-2 mb-4">
+                                <div class="p-3 bg-white/50 border border-[#A8703F]/20 text-center">
+                                    <div class="text-xl font-black text-[#2C2C2C]">4万+</div>
+                                    <div class="text-[10px] text-[#6B6B6B]">日活</div>
+                                </div>
+                                <div class="p-3 bg-white/50 border border-[#A8703F]/20 text-center">
+                                    <div class="text-xl font-black text-[#2C2C2C]">3500</div>
+                                    <div class="text-[10px] text-[#6B6B6B]">完单</div>
+                                </div>
+                                <div class="p-3 bg-white/50 border border-[#A8703F]/20 text-center">
+                                    <div class="text-xl font-black text-[#2C2C2C]">&lt;5%</div>
+                                    <div class="text-[10px] text-[#6B6B6B]">推送 CTR</div>
+                                </div>
+                            </div>
+                            <div class="p-4 bg-white/50 border border-red-400/20 space-y-2 text-xs text-[#2C2C2C]">
+                                <p><strong>核心问题：</strong>推送疲劳、打开率下降；千人一面无法匹配个性化需求。</p>
+                                <p class="pt-2 border-t border-red-400/20"><strong>思考：</strong>用对话建立关系，情感化互动替代短期激励。</p>
+                            </div>
+                        </div>
+                        <div class="border-l-4 border-[#A8703F] pl-6">
+                            <div class="mono text-xs text-[#6B6B6B] tracking-wider mb-3">RESULTS · 数据爆发</div>
+                            <p class="text-sm text-[#6B6B6B] mb-4">活动周期 1.06 至今</p>
+                            <div class="grid grid-cols-3 gap-2 sm:gap-4 mb-4">
+                                <div class="p-3 bg-white/50 border border-[#A8703F]/20 text-center">
+                                    <div class="text-lg font-black text-[#A8703F]">5万→12万</div>
+                                    <div class="text-[10px] text-[#6B6B6B]">日活 ↑140%</div>
+                                </div>
+                                <div class="p-3 bg-white/50 border border-[#A8703F]/20 text-center">
+                                    <div class="text-lg font-black text-[#A8703F]">14万</div>
+                                    <div class="text-[10px] text-[#6B6B6B]">新增注册</div>
+                                </div>
+                                <div class="p-3 bg-white/50 border border-[#A8703F]/20 text-center">
+                                    <div class="text-lg font-black text-[#A8703F]">7.8万</div>
+                                    <div class="text-[10px] text-[#6B6B6B]">沉睡召回</div>
+                                </div>
+                            </div>
+                            <div class="grid grid-cols-2 gap-4">
+                                <div class="p-4 bg-white/50 border border-[#A8703F]/20 text-center">
+                                    <div class="text-base font-bold text-[#A8703F]">4千→1万</div>
+                                    <div class="text-[10px] text-[#6B6B6B]">日均完单 ↑150%</div>
+                                </div>
+                                <div class="p-4 bg-white/50 border border-[#A8703F]/20 text-center">
+                                    <div class="text-base font-bold text-[#A8703F]">600w</div>
+                                    <div class="text-[10px] text-[#6B6B6B]">小红书 #逗逗小滴# 阅读</div>
+                                </div>
+                            </div>
+                        </div>
                     </div>
-                    <div class="glass-card p-6 border-l-4 border-[#5C614D] h-full flex flex-col">
-                        <h3 class="text-lg font-bold text-[#5C614D] mb-3">产品视角 / 体验考量</h3>
-                        <ul class="space-y-2 text-[#2C2C2C] text-sm leading-relaxed flex-1">
-                            <li><strong>如何构建个性化：</strong>基于用户状态与行为（新老客、是否首单、历史偏好）做意图识别与话术分层，推荐匹配的引导步骤与券权益，让「教」和「奖」可因人而异。</li>
-                            <li><strong>如何解决严重的幻觉问题：</strong>承诺幻觉会直接导致客诉与信任崩塌。通过知识注入（策略与权限边界）、上下文管理与安全拦截层（如 Qwen3guard 流式检测），把「只能说不存在的」压到可接受水平，优先保证「说出口的都能兑现」。</li>
+                </div>
+
+                <!-- Tab 滑动卡片 -->
+                <div class="glass-card p-6 sm:p-8 mb-8" id="ddxStoryArea">
+                    <div class="flex items-center justify-end flex-wrap gap-4 mb-6">
+                        <div class="flex flex-wrap gap-0 border border-[#A8703F]/20">
+                            <button type="button" class="chart-tab px-3 py-2 text-xs sm:text-sm font-medium active" data-chart="ddx-scene2">AI破局</button>
+                            <button type="button" class="chart-tab px-3 py-2 text-xs sm:text-sm font-medium" data-chart="ddx-scene3">产品设计</button>
+                            <button type="button" class="chart-tab px-3 py-2 text-xs sm:text-sm font-medium" data-chart="ddx-scene4">策略设计</button>
+                        </div>
+                    </div>
+
+                    <!-- AI 破局方案 -->
+                    <div class="ddx-panel show" id="ddx-scene2">
+                    <div class="border-l-4 border-[#A8703F] pl-6">
+                    <p class="text-sm font-semibold text-[#2C2C2C] mb-6">创新策略：用 AI Agent 做「有温度的营销」—— 不是冷冰冰的客服，而是「懂你的小滴」。选 Agent 而非传统裂变/红包，是为了用对话建立长期关系、情感化互动替代短期激励。</p>
+                    <div class="mono text-xs text-[#6B6B6B] tracking-wider mb-3">CORE DESIGN</div>
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
+                        <div class="p-4 bg-white/50 border border-[#A8703F]/20">
+                            <div class="font-bold text-[#A8703F] text-sm mb-1">1. 个性化对话</div>
+                            <div class="text-xs text-[#4A4A4A]">基于用户画像生成专属话术</div>
+                        </div>
+                        <div class="p-4 bg-white/50 border border-[#A8703F]/20">
+                            <div class="font-bold text-[#A8703F] text-sm mb-1">2. 智能发券</div>
+                            <div class="text-xs text-[#4A4A4A]">根据对话动态推荐最优券</div>
+                        </div>
+                        <div class="p-4 bg-white/50 border border-[#A8703F]/20">
+                            <div class="font-bold text-[#A8703F] text-sm mb-1">3. 情感化互动</div>
+                            <div class="text-xs text-[#4A4A4A]">「哄」用户，而非「推销」</div>
+                        </div>
+                    </div>
+                    <div class="p-4 bg-white/50 border border-[#A8703F]/20 mb-6 text-xs text-[#4A4A4A]">
+                        <strong class="text-[#2C2C2C]">AI 应用亮点：</strong>用户画像驱动（历史订单/偏好/时段）· 实时策略调整（库存/时段/竞品）· 幻觉治理保障（不过度承诺）
+                    </div>
+                    <div class="mono text-xs text-[#6B6B6B] tracking-wider mb-3">AGENT RELATIONSHIP</div>
+                    <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-6">
+                        <div>
+                            <p class="font-semibold text-sm text-[#2C2C2C] mb-3">与主打车 Agent 的关系</p>
+                            <p class="text-xs text-[#4A4A4A] leading-relaxed mb-3">营销 Agent 可独立投放，又通过对话流与特殊 token 与主打车 Agent 打通。独立部署时单点触达用户；打通后对话、IP 人格可影响主 Agent 联动，形成完整体验闭环。</p>
+                            <div class="flex flex-wrap gap-2 text-xs mb-3">
+                                <span class="px-2 py-1 bg-[#A8703F]/10 text-[#A8703F] border border-[#A8703F]/20">独立投放</span>
+                                <span class="px-2 py-1 bg-[#5C614D]/10 text-[#5C614D] border border-[#5C614D]/20">对话打通</span>
+                                <span class="px-2 py-1 bg-[#A8703F]/10 text-[#A8703F] border border-[#A8703F]/20">特殊 token</span>
+                            </div>
+                            <div class="p-4 bg-white/50 border border-[#A8703F]/20">
+                                <p class="text-xs text-[#6B6B6B] mb-2 mono">双 Agent 关系示意</p>
+                                <svg viewBox="0 0 400 100" class="w-full h-20">
+                                    <rect x="20" y="30" width="100" height="40" fill="none" stroke="#A8703F" stroke-width="2" rx="2"/>
+                                    <text x="70" y="55" text-anchor="middle" fill="#2C2C2C" font-size="11" font-weight="600">主打车 Agent</text>
+                                    <rect x="280" y="30" width="100" height="40" fill="none" stroke="#5C614D" stroke-width="2" rx="2"/>
+                                    <text x="330" y="55" text-anchor="middle" fill="#2C2C2C" font-size="11" font-weight="600">营销 Agent</text>
+                                    <path d="M 120 50 L 180 50" stroke="#A8703F" stroke-width="1.5" stroke-dasharray="4,2" fill="none"/>
+                                    <path d="M 220 50 L 280 50" stroke="#5C614D" stroke-width="1.5" stroke-dasharray="4,2" fill="none"/>
+                                    <text x="150" y="40" text-anchor="middle" fill="#6B6B6B" font-size="9">对话</text>
+                                    <text x="250" y="40" text-anchor="middle" fill="#6B6B6B" font-size="9">token</text>
+                                    <line x1="200" y1="20" x2="200" y2="80" stroke="#A8703F" stroke-width="1" opacity="0.4"/>
+                                </svg>
+                            </div>
+                        </div>
+                        <div>
+                            <p class="font-semibold text-sm text-[#2C2C2C] mb-3">个性化 IP 设计</p>
+                            <p class="text-xs text-[#4A4A4A] leading-relaxed">与对话结合的个性化 IP 设计，不仅强化「逗逗小滴」人设，还可通过话术、情绪、话题影响主 Agent 的联动策略，让营销体验与主流程无缝衔接。</p>
+                        </div>
+                    </div>
+                    </div>
+                    </div>
+
+                    <!-- 产品设计（活动设计） -->
+                    <div class="ddx-panel" id="ddx-scene3">
+                    <div class="border-l-4 border-[#5C614D] pl-6">
+                    <h3 class="text-lg font-bold text-[#5C614D] mb-4">活动设计 · 用户侧体验</h3>
+                    <p class="text-sm text-[#6B6B6B] mb-6">12 月底首次大规模落地 · 入口：首页金刚位、场景位、对话入口「小滴想和你聊聊」</p>
+                    <div class="mono text-xs text-[#6B6B6B] tracking-wider mb-3">DIALOGUE EXAMPLES · 用户行为洞察</div>
+                    <div class="grid grid-cols-1 lg:grid-cols-[1fr,0.85fr] gap-6 mb-4">
+                        <div class="space-y-4">
+                            <div class="flex gap-0 border border-[#A8703F]/20 w-fit">
+                                <button type="button" class="dialogue-tab px-4 py-2 text-sm font-medium active" data-dialogue="scene1">沉睡用户召回</button>
+                                <button type="button" class="dialogue-tab px-4 py-2 text-sm font-medium" data-dialogue="scene2">高价值用户维护</button>
+                            </div>
+                            <div class="dialogue-panel p-5 bg-white/50 border border-[#A8703F]/20" id="scene1">
+                                <div class="space-y-3 text-sm mb-4">
+                                    <div class="flex gap-2"><span class="text-[#A8703F] font-semibold shrink-0">小滴:</span><span>"好久不见! 我翻了翻,你上次用我是3周前去三里屯,那天下雨了🌧️"</span></div>
+                                    <div class="flex gap-2"><span class="text-[#5C614D] font-semibold shrink-0">用户:</span><span>"是啊,最近都骑单车"</span></div>
+                                    <div class="flex gap-2"><span class="text-[#A8703F] font-semibold shrink-0">小滴:</span><span>"理解! 但这周北京要降温到5度,别冻着~"</span></div>
+                                </div>
+                                <div class="text-xs text-[#6B6B6B] flex flex-wrap gap-2">
+                                    <span class="px-2 py-0.5 bg-[#A8703F]/10 text-[#A8703F]">个性化: 提及历史订单+天气</span>
+                                    <span class="px-2 py-0.5 bg-[#5C614D]/10 text-[#5C614D]">情感化: 关怀语气</span>
+                                </div>
+                            </div>
+                            <div class="dialogue-panel hidden p-5 bg-white/50 border border-[#A8703F]/20" id="scene2">
+                                <div class="space-y-3 text-sm mb-4">
+                                    <div class="flex gap-2"><span class="text-[#A8703F] font-semibold shrink-0">小滴:</span><span>"发现你每周三都打车回家,辛苦啦! 专属8折券已备好~"</span></div>
+                                    <div class="flex gap-2"><span class="text-[#5C614D] font-semibold shrink-0">用户:</span><span>"哈哈被发现了,能便宜点吗?"</span></div>
+                                    <div class="flex gap-2"><span class="text-[#A8703F] font-semibold shrink-0">小滴:</span><span>"看你这么捧场,再加个5元无门槛券,但只能用到本周五哦!"</span></div>
+                                </div>
+                                <div class="text-xs text-[#6B6B6B] flex flex-wrap gap-2">
+                                    <span class="px-2 py-0.5 bg-[#A8703F]/10 text-[#A8703F]">行为洞察: 动态激励</span>
+                                    <span class="px-2 py-0.5 bg-[#5C614D]/10 text-[#5C614D]">根据对话调整优惠</span>
+                                </div>
+                            </div>
+                            <div class="p-4 bg-white/50 border-l-4 border-[#5C614D]">
+                                <p class="font-semibold text-sm mb-2 text-[#2C2C2C]">用户行为洞察</p>
+                                <ul class="text-xs text-[#4A4A4A] space-y-1">
+                                    <li>· 沉睡唤醒：历史订单+天气/活动触发，关怀话术替代生硬推送</li>
+                                    <li>· 偏好驱动：天气、出行习惯、生活场景等作为对话入口，提升参与率</li>
+                                    <li>· 转化路径：对话建立信任 → 适时发券 → 完单转化</li>
+                                </ul>
+                            </div>
+                        </div>
+                        <div class="space-y-2">
+                            <div class="grid grid-cols-1 lg:grid-cols-3 gap-4">
+                                <div>
+                                    <img src="示例1.png" alt="逗逗小滴产品示例1" class="w-full max-w-[280px] border border-[#A8703F]/20 object-cover">
+                                    <p class="text-[10px] text-[#6B6B6B] mt-1 mono">入口示意</p>
+                                </div>
+                                <div>
+                                    <img src="示例2.png" alt="逗逗小滴产品示例2" class="w-full max-w-[280px] border border-[#A8703F]/20 object-cover">
+                                    <p class="text-[10px] text-[#6B6B6B] mt-1 mono">对话界面示意</p>
+                                </div>
+                                <div>
+                                    <img src="示例3.PNG" alt="逗逗小滴产品示例3" class="w-full max-w-[280px] border border-[#A8703F]/20 object-cover">
+                                    <p class="text-[10px] text-[#6B6B6B] mt-1 mono">体验入口</p>
+                                </div>
+                            </div>
+    
+                        </div>
+                    </div>
+                    </div>
+                    </div>
+
+                    <!-- 策略设计 -->
+                    <div class="ddx-panel" id="ddx-scene4">
+                    <div class="border-l-4 border-[#5C614D] pl-6">
+                    <h3 class="text-lg font-bold text-[#2C2C2C] mb-4">策略设计</h3>
+                    <p class="text-sm text-[#6B6B6B] mb-6">幻觉治理 + 双 Agent 评测 + 发券策略</p>
+                    <div class="mono text-xs text-[#6B6B6B] tracking-wider mb-3">STRATEGY ITERATION</div>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
+                        <div class="p-4 bg-white/50 border border-[#5C614D]/20">
+                            <p class="font-bold text-[#5C614D] text-sm mb-1">版本 1 · 无限对话</p>
+                            <p class="text-xs text-[#4A4A4A]">用户可随时进入，对话轮次无上限，侧重关系维护与深度互动</p>
+                        </div>
+                        <div class="p-4 bg-white/50 border border-[#A8703F]/20">
+                            <p class="font-bold text-[#A8703F] text-sm mb-1">版本 2 · 有限挑战</p>
+                            <p class="text-xs text-[#4A4A4A]">设置对话/发券轮次上限，平衡成本与转化</p>
+                        </div>
+                    </div>
+                    <div class="p-4 bg-white/50 border-l-4 border-[#A8703F] mb-6 text-xs text-[#4A4A4A]">
+                        <strong>迭代原因：</strong>无限对话带来成本压力、转化分散；迭代为有限挑战后可控制成本、聚焦高价值节点。
+                    </div>
+                    <div class="mono text-xs text-[#6B6B6B] tracking-wider mb-3">SAFETY & EVAL</div>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+                        <div class="p-4 bg-white/50 border-l-4 border-[#A8703F]">
+                            <p class="font-semibold text-sm mb-2">幻觉治理体系</p>
+                            <ul class="text-xs text-[#4A4A4A] space-y-1 mb-3">
+                                <li>· 源头: RAG 注入券池实时数据</li>
+                                <li>· 过程: 上下文压缩保留关键策略</li>
+                                <li>· 输出: Qwen3guard 流式过滤</li>
+                            </ul>
+                            <div class="text-sm font-bold text-[#A8703F]">幻觉率 5%→2.7% · 投诉率 -40.2%</div>
+                        </div>
+                        <div class="p-4 bg-white/50 border-l-4 border-[#5C614D]">
+                            <p class="font-semibold text-sm mb-2">双 Agent 评测</p>
+                            <ul class="text-xs text-[#4A4A4A] space-y-1">
+                                <li>· 用户 Agent: 100+ 对话场景（正常40% / 压力25% / 红队25%）</li>
+                                <li>· 裁判 Agent: 5维打分（话术友好度、发券准确性、拒绝合理性、人设一致性、合规性）</li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="mono text-xs text-[#6B6B6B] tracking-wider mb-3">发券策略</div>
+                    <div class="p-4 bg-white/50 border border-[#A8703F]/20 mb-6">
+                        <ul class="space-y-1 text-xs text-[#4A4A4A]">
+                            <li>· 券池实时同步（避免承诺无库存券）</li>
+                            <li>· 梯度发放规则（根据用户等级、好感度发放）</li>
+                            <li>· 红线拦截（「50元无门槛」等虚假承诺被 Qwen3guard 过滤）</li>
                         </ul>
                     </div>
-                </div>
-
-                <!-- Architecture Diagram：垂直流水线 -->
-                <div class="glass-card p-8 mb-8">
-                    <div class="flex items-center justify-between flex-wrap gap-4 mb-6">
-                        <h3 class="text-xl font-bold flex items-center gap-2">
-                            <div class="w-1 h-6 bg-[#A8703F] rounded"></div>
+                    <div class="mono text-xs text-[#6B6B6B] tracking-wider mb-3">ARCHITECTURE</div>
+                    <div class="pt-4 border-t border-[#A8703F]/20">
+                        <h4 class="text-base font-bold mb-4 flex items-center gap-2">
+                            <div class="w-1 h-5 bg-[#A8703F]"></div>
                             营销 Agent 架构设计（从0到1建设）
-                        </h3>
-                        <span class="mono text-xs text-[#6B6B6B] tracking-wider">User Query → Pipeline → Response</span>
-                    </div>
-                    <div class="arch-vertical pl-4">
-                        <div class="arch-layer-vertical">
-                            <div class="arch-layer-node">1</div>
-                            <div class="arch-layer-body">
-                                <div class="arch-layer-tag">INTENT LAYER</div>
-                                <div class="arch-layer-title">意图理解层</div>
-                                <div class="arch-layer-desc">业务场景定义与边界圈定 · Query 意图识别与分类 · 策略权限范围校验</div>
+                        </h4>
+                        <div class="arch-vertical arch-grid-lg pl-4">
+                            <div class="arch-layer-vertical">
+                                <div class="arch-layer-node">1</div>
+                                <div class="arch-layer-body">
+                                    <div class="arch-layer-tag">INTENT LAYER</div>
+                                    <div class="arch-layer-title">意图理解层</div>
+                                    <div class="arch-layer-desc">业务场景定义与边界圈定 · Query 意图识别与分类 · 策略权限范围校验</div>
+                                </div>
                             </div>
-                        </div>
-                        <div class="arch-layer-vertical">
-                            <div class="arch-layer-node">2</div>
-                            <div class="arch-layer-body">
-                                <div class="arch-layer-tag">KNOWLEDGE LAYER</div>
-                                <div class="arch-layer-title">知识注入层</div>
-                                <div class="arch-layer-desc">RAG 结构化知识库搭建 · 实时策略数据同步 · 业务规则动态更新</div>
+                            <div class="arch-layer-vertical">
+                                <div class="arch-layer-node">2</div>
+                                <div class="arch-layer-body">
+                                    <div class="arch-layer-tag">KNOWLEDGE LAYER</div>
+                                    <div class="arch-layer-title">知识注入层</div>
+                                    <div class="arch-layer-desc">RAG 结构化知识库搭建 · 实时策略数据同步 · 业务规则动态更新</div>
+                                </div>
                             </div>
-                        </div>
-                        <div class="arch-layer-vertical">
-                            <div class="arch-layer-node">3</div>
-                            <div class="arch-layer-body">
-                                <div class="arch-layer-tag">CONTEXT LAYER</div>
-                                <div class="arch-layer-title">上下文管理</div>
-                                <div class="arch-layer-desc">对话窗口无损压缩 · 核心信息保留机制 · 多轮对话状态管理</div>
+                            <div class="arch-layer-vertical">
+                                <div class="arch-layer-node">3</div>
+                                <div class="arch-layer-body">
+                                    <div class="arch-layer-tag">CONTEXT LAYER</div>
+                                    <div class="arch-layer-title">上下文管理</div>
+                                    <div class="arch-layer-desc">对话窗口无损压缩 · 核心信息保留机制 · 多轮对话状态管理</div>
+                                </div>
                             </div>
-                        </div>
-                        <div class="arch-layer-vertical">
-                            <div class="arch-layer-node">4</div>
-                            <div class="arch-layer-body">
-                                <div class="arch-layer-tag">SAFETY LAYER</div>
-                                <div class="arch-layer-title">安全拦截层</div>
-                                <div class="arch-layer-desc">Qwen3guard 实时检测 · 流式内容过滤 · 幻觉风险预警</div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="mt-6 pt-6 border-t border-[#A8703F]/20">
-                        <div class="grid grid-cols-3 gap-4">
-                            <div class="text-center">
-                                <div class="text-3xl font-black text-[#A8703F] mb-1">5.0% → 2.7%</div>
-                                <div class="text-xs text-[#6B6B6B]">幻觉发生率</div>
-                            </div>
-                            <div class="text-center">
-                                <div class="text-3xl font-black text-[#A8703F] mb-1">+32%</div>
-                                <div class="text-xs text-[#6B6B6B]">DAU 增长</div>
-                            </div>
-                            <div class="text-center">
-                                <div class="text-3xl font-black text-[#A8703F] mb-1">+225%</div>
-                                <div class="text-xs text-[#6B6B6B]">完单量增长</div>
+                            <div class="arch-layer-vertical">
+                                <div class="arch-layer-node">4</div>
+                                <div class="arch-layer-body">
+                                    <div class="arch-layer-tag">SAFETY LAYER</div>
+                                    <div class="arch-layer-title">安全拦截层</div>
+                                    <div class="arch-layer-desc">Qwen3guard 实时检测 · 流式内容过滤 · 幻觉风险预警</div>
+                                </div>
                             </div>
                         </div>
                     </div>
-                </div>
+                    </div>
+                    </div>
+                    </div>
 
+                </div>
             </div>
         </section>
 
@@ -1697,99 +2393,6 @@ h1 {
             </div>
         </section>
 
-        <!-- Experience & Education -->
-        <section id="background" class="py-20 px-4 sm:px-6 lg:px-8 reveal">
-            <div class="max-w-7xl mx-auto">
-                <div class="mb-12">
-                    <div class="mono text-xs text-[#6B6B6B] mb-3 tracking-wider">BACKGROUND</div>
-                    <h2 class="text-3xl sm:text-4xl font-black mb-4">工作与教育经历</h2>
-                </div>
-
-                <!-- Timeline Container -->
-                <div class="timeline-container">
-                    <div class="timeline-line"></div>
-
-                    <!-- 滴滴出行 - 当前工作 -->
-                    <div class="timeline-item">
-                        <div class="timeline-dot"></div>
-                        <div class="timeline-date">2025.06<br>至今</div>
-                        <div class="timeline-content">
-                            <div class="flex items-center gap-3 mb-3">
-                                <h3 class="text-2xl font-bold text-[#2C2C2C]">滴滴出行</h3>
-                                <span class="timeline-badge">Current</span>
-                            </div>
-                            <div class="text-[#A8703F] font-semibold mb-2">Llab · AI 策略产品经理</div>
-                            <div class="text-[#4A4A4A] leading-relaxed mb-4">
-                                负责滴滴 Agent 联网搜索底座(RAG)建设,解决 LLM 在出行场景下的事实性与时效性问题。主导 RAG 全链路策略优化、幻觉治理体系建设、双 Agent 自动化评测平台搭建。
-                            </div>
-                            <div class="flex flex-wrap gap-2">
-                                <span class="px-3 py-1 bg-white/70 border border-[#A8703F]/20 text-xs text-[#4A4A4A]">RAG 优化</span>
-                                <span class="px-3 py-1 bg-white/70 border border-[#A8703F]/20 text-xs text-[#4A4A4A]">幻觉治理</span>
-                                <span class="px-3 py-1 bg-white/70 border border-[#A8703F]/20 text-xs text-[#4A4A4A]">Agent 建设</span>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- 百度 -->
-                    <div class="timeline-item">
-                        <div class="timeline-dot"></div>
-                        <div class="timeline-date">2023.06<br>2025.05</div>
-                        <div class="timeline-content">
-                            <h3 class="text-2xl font-bold text-[#2C2C2C] mb-3">百度</h3>
-                            <div class="text-[#A8703F] font-semibold mb-2">搜索产品部 & 文库教育部 · AI 搜索产品经理</div>
-                            <div class="text-[#4A4A4A] leading-relaxed mb-4">
-                                负责百度搜索 S 级 AI 标杆项目"高考 Agent"的从0到1建设,主导多项 AIGC 内容生产与商业化创新。实现单日 DAU 190万+,用户渗透率40%+。
-                            </div>
-                            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                                <div class="bg-white/60 p-4 border border-[#A8703F]/10">
-                                    <div class="text-sm text-[#6B6B6B] mb-1">核心成果</div>
-                                    <div class="text-base text-[#2C2C2C]">高考志愿 Agent 从0到1,成为百度智能体评估标杆</div>
-                                </div>
-                                <div class="bg-white/60 p-4 border border-[#A8703F]/10">
-                                    <div class="text-sm text-[#6B6B6B] mb-1">商业化</div>
-                                    <div class="text-base text-[#2C2C2C]">AI 教辅产品全年销量突破 1000 万元</div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- 浙江大学 - 硕士 -->
-                    <div class="timeline-item education">
-                        <div class="timeline-dot"></div>
-                        <div class="timeline-date">2021.09<br>2023.06</div>
-                        <div class="timeline-content">
-                            <div class="flex items-start gap-4">
-                                <div class="w-12 h-12 bg-[#5C614D]/20 border border-[#5C614D]/30 flex items-center justify-center flex-shrink-0">
-                                    <span class="text-2xl">🎓</span>
-                                </div>
-                                <div class="flex-1">
-                                    <h3 class="text-xl font-bold text-[#2C2C2C] mb-1">浙江大学</h3>
-                                    <div class="text-[#5C614D] font-semibold mb-1">国际贸易学 · 硕士</div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- 大连理工大学 - 学士 -->
-                    <div class="timeline-item education">
-                        <div class="timeline-dot"></div>
-                        <div class="timeline-date">2017.09<br>2021.06</div>
-                        <div class="timeline-content">
-                            <div class="flex items-start gap-4">
-                                <div class="w-12 h-12 bg-[#5C614D]/20 border border-[#5C614D]/30 flex items-center justify-center flex-shrink-0">
-                                    <span class="text-2xl">🎓</span>
-                                </div>
-                                <div class="flex-1">
-                                    <h3 class="text-xl font-bold text-[#2C2C2C] mb-1">大连理工大学</h3>
-                                    <div class="text-[#5C614D] font-semibold mb-1">国际经济与贸易 · 学士</div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </section>
-
         <!-- CTA Section -->
         <section class="py-20 px-4 sm:px-6 lg:px-8 border-t border-[#A8703F]/20">
             <div class="max-w-4xl mx-auto text-center">
@@ -1954,6 +2557,69 @@ h1 {
                 el.scrollIntoView({ behavior: 'smooth', block: 'start' });
                 requestAnimationFrame(() => el.classList.add('section-highlight'));
                 setTimeout(() => el.classList.remove('section-highlight'), 2000);
+            });
+        });
+
+        // 工作经历横轴时间线：点击展开/收起详情
+        document.querySelectorAll('.timeline-node-btn').forEach(btn => {
+            btn.addEventListener('click', () => {
+                const targetId = btn.getAttribute('data-expand');
+                const targetDetail = document.getElementById(targetId);
+                const allDetails = document.querySelectorAll('.timeline-detail');
+                const allBtns = document.querySelectorAll('.timeline-node-btn');
+                if (!targetDetail) return;
+                const isAlreadyOpen = targetDetail.classList.contains('show');
+                allDetails.forEach(d => d.classList.remove('show'));
+                allBtns.forEach(b => b.classList.remove('active'));
+                if (!isAlreadyOpen) {
+                    targetDetail.classList.add('show');
+                    btn.classList.add('active');
+                }
+            });
+        });
+
+        // 全链路搜索项目：图表 Tab 切换
+        const chartArea = document.getElementById('project1ChartArea');
+        if (chartArea) {
+            chartArea.querySelectorAll('.chart-tab').forEach(tab => {
+                tab.addEventListener('click', () => {
+                    const chartId = tab.getAttribute('data-chart');
+                    if (!chartId) return;
+                    chartArea.querySelectorAll('.chart-tab').forEach(t => t.classList.remove('active'));
+                    tab.classList.add('active');
+                    chartArea.querySelectorAll('.chart-panel').forEach(p => p.classList.remove('show'));
+                    const panel = document.getElementById(chartId);
+                    if (panel) panel.classList.add('show');
+                });
+            });
+        }
+
+        // 「逗逗小滴」故事线 Tab 切换
+        const ddxArea = document.getElementById('ddxStoryArea');
+        if (ddxArea) {
+            ddxArea.querySelectorAll('.chart-tab').forEach(tab => {
+                tab.addEventListener('click', () => {
+                    const sceneId = tab.getAttribute('data-chart');
+                    if (!sceneId) return;
+                    ddxArea.querySelectorAll('.chart-tab').forEach(t => t.classList.remove('active'));
+                    tab.classList.add('active');
+                    ddxArea.querySelectorAll('.ddx-panel').forEach(p => p.classList.remove('show'));
+                    const panel = document.getElementById(sceneId);
+                    if (panel) panel.classList.add('show');
+                });
+            });
+        }
+
+        // 「逗逗小滴」对话示例 Tab 切换
+        document.querySelectorAll('.dialogue-tab').forEach(tab => {
+            tab.addEventListener('click', () => {
+                const targetId = tab.getAttribute('data-dialogue');
+                if (!targetId) return;
+                tab.closest('.glass-card')?.querySelectorAll('.dialogue-tab').forEach(t => t.classList.remove('active'));
+                tab.classList.add('active');
+                tab.closest('.glass-card')?.querySelectorAll('.dialogue-panel').forEach(p => p.classList.add('hidden'));
+                const panel = document.getElementById(targetId);
+                if (panel) panel.classList.remove('hidden');
             });
         });
 
