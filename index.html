@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>赵鑫 - AI 策略产品经理</title>
+    <title>赵鑫 - AI 产品经理</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -21,18 +21,25 @@
     --glass-bg: rgba(255, 255, 255, 0.6); /* 玻璃卡片背景 */
     --glass-blur: 24px;
     --card-border: rgba(168, 112, 63, 0.2); /* 卡片边框 */
+    --card-solid-bg: #FFFDF9; /* 可折叠区块纯色底 */
 }
 
-/* 1. Visual Skeleton - 12-Column Architectural Grid */
+/* 1. Visual Skeleton - 双层重叠网格（与 Hero 一致） */
+.content-wrapper,
+.section-grid-visible {
+    background-color: var(--bg-primary);
+    background-image: 
+        linear-gradient(to right, var(--border-rational) 1px, transparent 1px),
+        linear-gradient(to bottom, var(--border-rational) 1px, transparent 1px),
+        linear-gradient(rgba(168, 112, 63, 0.12) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(168, 112, 63, 0.12) 1px, transparent 1px);
+    background-size: calc(100% / 12) 120px, calc(100% / 12) 120px, 120px 120px, 120px 120px;
+    background-position: 0 0, 0 0, 0 0, 0 0;
+}
+
 .content-wrapper {
     position: relative;
     z-index: 1;
-    /* 12-column architectural grid with large negative space */
-    background-image: 
-        linear-gradient(to right, var(--border-rational) 1px, transparent 1px),
-        linear-gradient(to bottom, var(--border-rational) 1px, transparent 1px);
-    background-size: calc(100% / 12) 120px; /* 12-column grid */
-    background-position: 0 0;
 }
 
 /* Ma-gap: Large negative space for breathing */
@@ -41,8 +48,9 @@
 }
 
 @media (max-width: 768px) {
-    .content-wrapper {
-        background-size: calc(100% / 6) 80px; /* 6-column on mobile */
+    .content-wrapper,
+    .section-grid-visible {
+        background-size: calc(100% / 6) 80px, calc(100% / 6) 80px, 80px 80px, 80px 80px;
     }
     .ma-gap {
         margin: 4rem 0;
@@ -94,8 +102,8 @@
             width: 300px;
             height: 300px;
             background: radial-gradient(circle, 
-                rgba(168, 112, 63, 0.12) 0%, 
-                rgba(168, 112, 63, 0.05) 40%, 
+                rgba(168, 112, 63, 0.06) 0%, 
+                rgba(168, 112, 63, 0.025) 40%, 
                 transparent 70%);
             filter: blur(60px);
             pointer-events: none;
@@ -187,24 +195,11 @@ h1 {
 }
 
 /* Technical Monospace for data/details */
-.mono, code, .data-display {
+.mono, code {
     font-family: 'JetBrains Mono', monospace;
     font-weight: 600;
     letter-spacing: 0.05em;
 }
-
-        .mono {
-            font-family: 'JetBrains Mono', monospace;
-        }
-
-        /* Background effects - 建筑草图底网 */
-        .grid-bg {
-            background-image: 
-                linear-gradient(rgba(168, 112, 63, 0.12) 1px, transparent 1px),
-                linear-gradient(90deg, rgba(168, 112, 63, 0.12) 1px, transparent 1px);
-            background-size: 120px 120px; /* 放大网格尺寸 */
-            background-position: 0 0;
-        }
 
         /* High-density film grain texture */
         .noise-overlay {
@@ -219,8 +214,6 @@ h1 {
             background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='1.2' numOctaves='5' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
             mix-blend-mode: overlay;
         }
-
-        /* Remove duplicate glass-card definition - using the one above */
 
         /* Counter animation */
         @keyframes countUp {
@@ -378,6 +371,65 @@ h1 {
             color: var(--accent-terracotta);
             border-color: rgba(168, 112, 63, 0.3);
         }
+        /* SOP 流程图：5 列 + 子步骤 + AI 提效块 */
+        .sop-column {
+            background: var(--glass-bg);
+            border-left: 1px solid var(--card-border);
+            border-top: 1px solid var(--card-border);
+            padding: 1rem;
+            min-height: 140px;
+            transition: all 0.4s ease;
+            cursor: pointer;
+        }
+        .sop-column:hover { background: rgba(168, 112, 63, 0.06); border-left-color: var(--accent-terracotta); border-top-color: var(--accent-terracotta); }
+        .sop-col-header {
+            font-weight: 700;
+            font-size: 0.95rem;
+            color: var(--text-primary);
+            padding-bottom: 0.5rem;
+            border-bottom: 1px solid var(--border-rational);
+            margin-bottom: 0.5rem;
+        }
+        .sop-column:nth-child(1) .sop-col-header,
+        .sop-column:nth-child(5) .sop-col-header,
+        .sop-column:nth-child(9) .sop-col-header { color: var(--accent-terracotta); }
+        .sop-column:nth-child(3) .sop-col-header,
+        .sop-column:nth-child(7) .sop-col-header { color: var(--accent-olive); }
+        .sop-col-steps { font-size: 0.75rem; color: var(--text-secondary); line-height: 1.7; }
+        .sop-col-steps span { display: block; }
+        .sop-ai-block {
+            margin-top: 0.5rem;
+            padding: 0.4rem 0.6rem;
+            border-left: 3px solid var(--accent-olive);
+            background: rgba(92, 97, 77, 0.06);
+            font-size: 0.7rem;
+            color: var(--text-secondary);
+        }
+        .sop-arrow-wrap { display: flex; align-items: center; justify-content: center; color: rgba(168, 112, 63, 0.5); font-size: 1.25rem; }
+        .sop-arrow-horz { display: flex; }
+        .sop-arrow-vert { display: none; height: 24px; }
+        /* 视频多模态：收起 ► / 展开 ▼ */
+        .video-multimodal-details[open] .video-multimodal-arrow-collapsed { display: none; }
+        .video-multimodal-details[open] .video-multimodal-arrow-expanded { display: inline !important; }
+        .video-multimodal-details[open] .video-multimodal-subtitle { display: none; }
+        /* AIGC PV 后验层级：隐藏 details 默认三角，用自定义 ▾ */
+        .pv-metric-layer summary::-webkit-details-marker { display: none; }
+        .pv-metric-layer summary::marker { content: ''; display: none; }
+        /* 延申项目：收起 ► / 展开 ▼ */
+        .extend-project-details[open] .extend-arrow-collapsed { display: none; }
+        .extend-project-details[open] .extend-arrow-expanded { display: inline !important; }
+        .extend-project-details[open] .extend-project-subtitle { display: none; }
+        /* 延申项目：纯色底，与 glass-card 视觉一致 */
+        .extend-project-details summary { background: var(--card-solid-bg) !important; }
+        .extend-project-details summary:hover { background: var(--card-solid-bg) !important; }
+        .extend-project-details > div { background: var(--card-solid-bg); }
+        /* 双 Agent 评测架构图：卡片化视觉 */
+        .eval-arch-dual-agent { background: var(--glass-bg); box-shadow: 0 2px 8px rgba(168,112,63,0.08); }
+        .eval-arch-layer-title { border-left: 4px solid var(--accent-terracotta); padding-left: 0.75rem; }
+        .eval-arch-layer-title.alt { border-left-color: var(--accent-olive); }
+        .eval-arch-card { background: rgba(255,255,255,0.6); border: 1px solid var(--card-border); transition: box-shadow 0.3s; }
+        .eval-arch-card:hover { box-shadow: 0 2px 8px rgba(168,112,63,0.12); }
+        .eval-pipeline-node { background: linear-gradient(135deg, rgba(168,112,63,0.12), rgba(168,112,63,0.06)); border-left: 3px solid var(--accent-terracotta); }
         .dialogue-tab {
             background: transparent;
             color: var(--text-secondary);
@@ -578,47 +630,6 @@ h1 {
             .arch-stage-connector { right: 50%; top: auto; bottom: -14px; transform: translate(50%, 50%) rotate(90deg); }
         }
 
-        /* Comparison slider */
-        .comparison-container {
-            position: relative;
-            overflow: hidden;
-        }
-
-        .comparison-slider {
-            position: absolute;
-            top: 0;
-            bottom: 0;
-            width: 4px;
-            background: linear-gradient(to bottom, var(--blue), var(--green));
-            cursor: ew-resize;
-            z-index: 10;
-            box-shadow: 0 0 20px rgba(59, 130, 246, 0.6);
-        }
-
-        .comparison-slider::before {
-            content: '';
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            width: 44px;
-            height: 44px;
-            background: var(--blue);
-            border-radius: 50%;
-            box-shadow: 0 0 0 6px rgba(59, 130, 246, 0.2);
-        }
-
-        .comparison-slider::after {
-            content: '⟷';
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            font-size: 16px;
-            color: white;
-            font-weight: bold;
-        }
-
         /* Button effects */
         .cta-button {
             position: relative;
@@ -691,15 +702,6 @@ h1 {
             .glass-card {
                 padding: 1.25rem !important;
             }
-            
-            .comparison-slider {
-                width: 3px;
-            }
-
-            .comparison-slider::before {
-                width: 36px;
-                height: 36px;
-            }
         }
 
         /* Section reveal on scroll */
@@ -746,16 +748,12 @@ h1 {
             pointer-events: none;
         }
 
-        /* 小纸条：右滑下一道动画 */
+        /* 小纸条：点击下一题后内容左滑 */
         .slip-card-inner {
-            transition: transform 0.35s ease-out, opacity 0.25s ease-out;
+            transition: transform 0.3s ease-out, opacity 0.25s ease-out;
         }
         .slip-card-inner.slip-slide-out {
             transform: translateX(-100%);
-            opacity: 0;
-        }
-        .slip-card-inner.slip-slide-in {
-            transform: translateX(100%);
             opacity: 0;
         }
 
@@ -841,15 +839,6 @@ h1 {
             .floating-sidebar {
                 display: none;
             }
-        }
-
-        /* Project background section */
-        .project-background {
-            background: rgba(168, 112, 63, 0.06);
-            border-left: 3px solid var(--accent-terracotta);
-            padding: 1.5rem;
-            border-radius: 0.5rem;
-            margin-bottom: 2rem;
         }
 
         /* 未完成感：延伸但不闭合的线条 */
@@ -1095,7 +1084,7 @@ h1 {
             position: relative;
             display: flex;
             justify-content: space-between;
-            align-items: flex-start;
+            align-items: stretch;
             gap: 1rem;
             padding: 2rem 0 0;
         }
@@ -1114,7 +1103,7 @@ h1 {
             min-width: 0;
             display: flex;
             flex-direction: column;
-            align-items: center;
+            align-items: stretch;
             position: relative;
             z-index: 2;
         }
@@ -1122,6 +1111,7 @@ h1 {
             display: flex;
             flex-direction: column;
             align-items: center;
+            justify-content: center;
             gap: 0.5rem;
             padding: 1rem;
             cursor: pointer;
@@ -1130,6 +1120,8 @@ h1 {
             border: 1px solid var(--card-border);
             transition: all 0.3s ease;
             width: 100%;
+            flex: 1;
+            min-height: 10rem;
             text-align: center;
         }
         .timeline-node-btn:hover {
@@ -1171,10 +1163,14 @@ h1 {
         .timeline-detail {
             display: none;
             margin-top: 2rem;
+            min-height: 18rem;
             animation: detailExpand 0.4s ease-out;
         }
         .timeline-detail.show {
             display: block;
+        }
+        .timeline-detail.timeline-detail-education {
+            min-height: auto;
         }
         @keyframes detailExpand {
             from { opacity: 0; transform: translateY(-10px); }
@@ -1217,6 +1213,7 @@ h1 {
                 flex-direction: row;
                 justify-content: flex-start;
                 text-align: left;
+                min-height: 5rem;
             }
         }
     </style>
@@ -1242,7 +1239,6 @@ h1 {
             <a href="#project1" class="sidebar-item" data-section="project1">滴滴搜索</a>
             <a href="#project2" class="sidebar-item" data-section="project2">营销 Agent</a>
             <a href="#project3" class="sidebar-item" data-section="project3">高考 Agent</a>
-            <a href="#project4" class="sidebar-item" data-section="project4">教辅 Agent</a>
             <a href="#methodology" class="sidebar-item" data-section="methodology">评测体系</a>
             <a href="#skills" class="sidebar-item" data-section="skills">技能矩阵</a>
         </nav>
@@ -1269,7 +1265,7 @@ h1 {
         </nav>
 
         <!-- Hero Section -->
-        <section id="hero" class="min-h-screen flex items-center px-4 sm:px-6 lg:px-8 pt-24 pb-12 grid-bg">
+        <section id="hero" class="min-h-screen flex items-center px-4 sm:px-6 lg:px-8 pt-24 pb-12">
             <div class="max-w-7xl w-full mx-auto">
                 <div class="hero-container">
                     <!-- Left: Welcome, Introduction, Contact -->
@@ -1289,9 +1285,8 @@ h1 {
 
                         <!-- Introduction -->
                         <p class="text-base sm:text-lg text-[#2C2C2C] font-light leading-relaxed max-w-xl">
-                            3年 AI 策略产品经理经验，深耕<span class="text-[#A8703F] font-medium">Agent落地全链路策略</span><br>
-                            及<span class="text-[#A8703F] font-medium">垂类模型微调</span>、<span class="text-[#A8703F] font-medium">幻觉治理</span>、<span class="text-[#A8703F] font-medium">RAG 知识库搭建。</span><br>
-                            <span class="text-[#5C614D] font-medium">主导模型搜索优化、工具、人格化Agent从0到1构建等核心项目。</span>
+                            3年 AI native产品经理经验<br>深耕<span class="text-[#A8703F] font-medium">AI搜索、Agent构建/评测</span><br>
+                            <span class="text-[#5C614D] font-medium">主导AI搜索优化、工具/人格化Agent从0到1构建等核心项目</span>
                         </p>
                         <p class="text-base text-[#4A4A4A] font-medium leading-relaxed max-w-xl border-l-2 border-[#A8703F] pl-4 mt-2">
                             从用户与业务目标出发做策略与架构决策，而不只是执行优化。
@@ -1313,7 +1308,7 @@ h1 {
                         <div class="profile-photo-container cursor-pointer relative" id="profilePhotoContainer">
                             <img src="photo.jpg" alt="赵鑫" class="profile-photo" id="profilePhoto" 
                                  onerror="this.style.display='none'; this.parentElement.style.display='none';">
-                            <button type="button" id="slipKnowMore" class="absolute -bottom-2 -right-2 sm:-bottom-3 sm:-right-3 inline-flex items-center gap-1.5 sm:gap-2 px-3 py-2 sm:px-4 sm:py-2.5 bg-[#A8703F]/90 border-2 border-[#A8703F] text-white hover:bg-[#A8703F] font-semibold text-sm sm:text-base transition-all whitespace-nowrap shadow-lg">know more <span class="text-base sm:text-lg">↗</span></button>
+                            <button type="button" id="slipKnowMore" class="absolute -bottom-2 -right-2 sm:-bottom-3 sm:-right-3 inline-flex items-center gap-1.5 sm:gap-2 px-3 py-2 sm:px-4 sm:py-2.5 bg-[#A8703F]/90 border-2 border-[#A8703F] text-white hover:bg-[#A8703F] font-semibold text-sm sm:text-base transition-all whitespace-nowrap shadow-lg">抽个纸条 <span class="text-base sm:text-lg">↗</span></button>
                         </div>
                     </div>
                 </div>
@@ -1348,7 +1343,7 @@ h1 {
                             </div>
                         </button>
 
-                        <!-- Card 2: Agent/营销 + 幻觉治理指标 -->
+                        <!-- Card 2: Agent/营销 + 业务增长 -->
                         <button type="button" class="chip-jump glass-card p-8 group vector-move text-left block w-full" data-section="project2">
                             <div class="flex items-center gap-2 mb-3">
                                 <div class="w-2 h-2 bg-[#A8703F]"></div>
@@ -1356,14 +1351,14 @@ h1 {
                             </div>
                             <div class="mb-3">
                                 <div class="flex items-baseline gap-3 mb-2">
-                                    <span class="text-3xl font-light text-[#9A9A9A] line-through">5.0%</span>
+                                    <span class="text-3xl font-light text-[#9A9A9A] line-through">4k单</span>
                                     <svg class="w-6 h-6 text-[#A8703F]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7l5 5m0 0l-5 5m5-5H6"/>
                                     </svg>
-                                    <span class="text-5xl font-black text-[#A8703F] counter" data-target="2.7" data-suffix="%" data-decimal="true">0.0%</span>
+                                    <span class="text-5xl font-black text-[#A8703F] counter" data-target="10" data-suffix="k单"></span>
                                 </div>
                             </div>
-                            <div class="text-sm text-[#4A4A4A] mb-4">幻觉发生率降低</div>
+                            <div class="text-sm text-[#4A4A4A] mb-4">业务完单量增长</div>
                             <div class="progress-container">
                                 <div class="progress-bar" style="width: 54%; animation-delay: 0.2s;"></div>
                             </div>
@@ -1467,7 +1462,7 @@ h1 {
 
                 <!-- 详情面板：全宽展示，点击节点后展开 -->
                 <div class="mt-8">
-                    <div class="timeline-detail glass-card p-6 border-l-4 border-[#5C614D] w-full" id="detail-dut">
+                    <div class="timeline-detail timeline-detail-education glass-card p-4 border-l-4 border-[#5C614D] w-full" id="detail-dut">
                         <div class="flex items-start gap-4">
                             <div class="w-12 h-12 bg-[#5C614D]/20 border border-[#5C614D]/30 flex items-center justify-center flex-shrink-0">
                                 <span class="text-2xl">🎓</span>
@@ -1478,7 +1473,7 @@ h1 {
                             </div>
                         </div>
                     </div>
-                    <div class="timeline-detail glass-card p-6 border-l-4 border-[#5C614D] w-full" id="detail-zju">
+                    <div class="timeline-detail timeline-detail-education glass-card p-4 border-l-4 border-[#5C614D] w-full" id="detail-zju">
                         <div class="flex items-start gap-4">
                             <div class="w-12 h-12 bg-[#5C614D]/20 border border-[#5C614D]/30 flex items-center justify-center flex-shrink-0">
                                 <span class="text-2xl">🎓</span>
@@ -1596,10 +1591,9 @@ h1 {
                 <div class="glass-card p-8 mb-8" id="baiduSearchChartArea">
                     <div class="flex flex-col gap-4 mb-6">
                         <div class="flex flex-wrap items-center justify-between gap-4">
-                            <h3 class="text-xl font-bold">垂搜效果与产线</h3>
+                            <h3 class="text-xl font-bold">汉语垂搜效果与产线</h3>
                             <div class="flex gap-0 border border-[#A8703F]/20">
                                 <button type="button" class="chart-tab px-4 py-2 text-sm font-medium transition-all active" data-chart="baidu-pv">AIGC 覆盖 PV</button>
-                                <button type="button" class="chart-tab px-4 py-2 text-sm font-medium transition-all" data-chart="baidu-cost">成本-质量</button>
                                 <button type="button" class="chart-tab px-4 py-2 text-sm font-medium transition-all" data-chart="baidu-sop">生产 SOP</button>
                             </div>
                         </div>
@@ -1626,7 +1620,7 @@ h1 {
                     <!-- Tab 1: AIGC 内容覆盖 PV -->
                     <div class="chart-panel show" id="baidu-pv">
                         <h4 class="text-lg font-semibold text-[#4A4A4A] mb-3">AIGC 内容覆盖 PV</h4>
-                        <div class="grid grid-cols-1 lg:grid-cols-[1fr_280px] gap-8 mb-6">
+                        <div class="grid grid-cols-1 lg:grid-cols-[1fr_360px] gap-8 mb-6">
                             <div>
                                 <div class="line-chart-container mb-2" id="pv-line-chart-wrap">
                                     <svg viewBox="0 0 800 400" class="w-full h-full">
@@ -1646,49 +1640,49 @@ h1 {
                                         </g>
                                         <!-- Y 轴刻度数字 -->
                                         <text x="90" y="360" text-anchor="end" fill="#4A4A4A" font-size="12" class="mono">0</text>
-                                        <text x="90" y="290" text-anchor="end" fill="#4A4A4A" font-size="12" class="mono">400</text>
-                                        <text x="90" y="220" text-anchor="end" fill="#4A4A4A" font-size="12" class="mono">800</text>
-                                        <text x="90" y="150" text-anchor="end" fill="#4A4A4A" font-size="12" class="mono">1200</text>
+                                        <text x="90" y="290" text-anchor="end" fill="#4A4A4A" font-size="12" class="mono">400万</text>
+                                        <text x="90" y="220" text-anchor="end" fill="#4A4A4A" font-size="12" class="mono">800万</text>
+                                        <text x="90" y="150" text-anchor="end" fill="#4A4A4A" font-size="12" class="mono">1200万</text>
                                         <text x="90" y="60" text-anchor="end" fill="#4A4A4A" font-size="12" class="mono">1705万</text>
                                         <!-- 累计 PV: 300,390,630,850,1100,1705 → y=350-(pv/1705)*300 -->
                                         <path fill="none" stroke="url(#pvLineGradient)" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"
                                             d="M 100 297.2 L 220 281.4 L 340 239.2 L 460 200.4 L 580 156.5 L 700 50"/>
-                                        <g class="pv-chart-point" data-expand="pv-exp-1" style="cursor:pointer">
+                                        <g class="pv-chart-point">
                                             <circle cx="100" cy="297.2" r="12" fill="#A8703F" opacity="0.3" class="pulse-glow"/>
                                             <circle cx="100" cy="297.2" r="8" fill="#A8703F" stroke="#FAF3E9" stroke-width="2"/>
                                             <text x="100" y="283" text-anchor="middle" fill="#A8703F" font-size="16" font-weight="bold">300</text>
                                             <text x="100" y="380" text-anchor="middle" fill="#2C2C2C" font-size="14" font-weight="600">Step 1</text>
                                           
                                         </g>
-                                        <g class="pv-chart-point" data-expand="pv-exp-2" style="cursor:pointer">
+                                        <g class="pv-chart-point">
                                             <circle cx="220" cy="281.4" r="12" fill="#A8703F" opacity="0.3" class="pulse-glow"/>
                                             <circle cx="220" cy="281.4" r="8" fill="#A8703F" stroke="#FAF3E9" stroke-width="2"/>
                                             <text x="220" y="267" text-anchor="middle" fill="#A8703F" font-size="16" font-weight="bold">390</text>
                                             <text x="220" y="380" text-anchor="middle" fill="#2C2C2C" font-size="14" font-weight="600">Step 2</text>
                                            
                                         </g>
-                                        <g class="pv-chart-point" data-expand="pv-exp-3" style="cursor:pointer">
+                                        <g class="pv-chart-point">
                                             <circle cx="340" cy="239.2" r="12" fill="#A8703F" opacity="0.3" class="pulse-glow"/>
                                             <circle cx="340" cy="239.2" r="8" fill="#A8703F" stroke="#FAF3E9" stroke-width="2"/>
                                             <text x="340" y="225" text-anchor="middle" fill="#A8703F" font-size="16" font-weight="bold">630</text>
                                             <text x="340" y="380" text-anchor="middle" fill="#2C2C2C" font-size="14" font-weight="600">Step 3</text>
                                            
                                         </g>
-                                        <g class="pv-chart-point" data-expand="pv-exp-4" style="cursor:pointer">
+                                        <g class="pv-chart-point">
                                             <circle cx="460" cy="200.4" r="12" fill="#A8703F" opacity="0.3" class="pulse-glow"/>
                                             <circle cx="460" cy="200.4" r="8" fill="#A8703F" stroke="#FAF3E9" stroke-width="2"/>
                                             <text x="460" y="186" text-anchor="middle" fill="#A8703F" font-size="16" font-weight="bold">850</text>
                                             <text x="460" y="380" text-anchor="middle" fill="#2C2C2C" font-size="14" font-weight="600">Step 4</text>
                                            
                                         </g>
-                                        <g class="pv-chart-point" data-expand="pv-exp-5" style="cursor:pointer">
+                                        <g class="pv-chart-point">
                                             <circle cx="580" cy="156.5" r="12" fill="#A8703F" opacity="0.3" class="pulse-glow"/>
                                             <circle cx="580" cy="156.5" r="8" fill="#A8703F" stroke="#FAF3E9" stroke-width="2"/>
                                             <text x="580" y="142" text-anchor="middle" fill="#A8703F" font-size="16" font-weight="bold">1100</text>
                                             <text x="580" y="380" text-anchor="middle" fill="#2C2C2C" font-size="14" font-weight="600">Step 5</text>
                                             
                                         </g>
-                                        <g class="pv-chart-point" data-expand="pv-exp-6" style="cursor:pointer">
+                                        <g class="pv-chart-point">
                                             <circle cx="700" cy="50" r="12" fill="#5C614D" opacity="0.3" class="pulse-glow"/>
                                             <circle cx="700" cy="50" r="8" fill="#5C614D" stroke="#FAF3E9" stroke-width="2"/>
                                             <text x="700" y="35" text-anchor="middle" fill="#5C614D" font-size="16" font-weight="bold">1705</text>
@@ -1697,144 +1691,227 @@ h1 {
                                         </g>
                                     </svg>
                                 </div>
-                                <p class="text-xs text-[#6B6B6B] mono">X=推全时间（月），Y=累计 PV（万）</p>
+                                
                             </div>
-                            <div class="pv-chart-right-panel rounded-lg border border-[#E5E5E5] bg-[#FAF3E9]/20 p-4 min-h-[200px] flex flex-col">
-                                <p id="pv-detail-placeholder" class="text-sm text-[#6B6B6B] my-auto">点击数据点查看先验 GSB / 后验结论</p>
-                                <div id="pv-exp-1" class="pv-expand-row hidden flex flex-col gap-3 text-sm text-[#4A4A4A]">
-                                    <div><span class="font-medium text-[#2C2C2C]">先验 GSB：</span>随机持平；长冷持平。</div>
-                                    <div><span class="font-medium text-[#2C2C2C]">后验：</span>页翻率↓，长点率↑。</div>
+                            <div class="glass-card p-6 border-l-4 border-[#A8703F] self-start">
+                                <h4 class="text-base font-bold text-[#2C2C2C] mb-3">【先验指标】上线前质量预估</h4>
+                                <div class="flex items-center justify-between gap-4 text-sm mb-4 pb-3 border-b border-[#A8703F]/15">
+                                    <span class="text-[#4A4A4A]">随机 & 长冷 case GSB</span>
+                                    <span class="font-bold text-[#A8703F] mono">持平及以上</span>
                                 </div>
-                                <div id="pv-exp-2" class="pv-expand-row hidden flex flex-col gap-3 text-sm text-[#4A4A4A]">
-                                    <div><span class="font-medium text-[#2C2C2C]">先验 GSB：</span>随机持平，长冷持平。</div>
-                                    <div><span class="font-medium text-[#2C2C2C]">后验：</span>Query 变化↓，翻页率↓，首位/二位点击↑。</div>
-                                </div>
-                                <div id="pv-exp-3" class="pv-expand-row hidden flex flex-col gap-3 text-sm text-[#4A4A4A]">
-                                    <div><span class="font-medium text-[#2C2C2C]">先验 GSB：</span>随机持平，长冷持平。</div>
-                                    <div><span class="font-medium text-[#2C2C2C]">后验：</span>满意消费 PV 持平，换Query率↓，重复搜索 PV 比持平。</div>
-                                </div>
-                                <div id="pv-exp-4" class="pv-expand-row hidden flex flex-col gap-3 text-sm text-[#4A4A4A]">
-                                    <div><span class="font-medium text-[#2C2C2C]">先验 GSB：</span>随机 1:99:0 持平，长冷 3:97:0 正收益。</div>
-                                    <div><span class="font-medium text-[#2C2C2C]">后验：</span>用户活跃↑，人均搜索活跃↑，换Query率↓，满意消费 PV↑。</div>
-                                </div>
-                                <div id="pv-exp-5" class="pv-expand-row hidden flex flex-col gap-3 text-sm text-[#4A4A4A]">
-                                    <div><span class="font-medium text-[#2C2C2C]">先验 GSB：</span>随机 4:94:2 持平，长冷 3:94:3 持平。</div>
-                                    <div><span class="font-medium text-[#2C2C2C]">后验：</span>满意消费 PV↑，满意消费率↑，长点率↑；点击率↑。</div>
-                                </div>
-                                <div id="pv-exp-6" class="pv-expand-row hidden flex flex-col gap-3 text-sm text-[#4A4A4A]">
-                                    <div><span class="font-medium text-[#2C2C2C]">后验：</span>搜索 PV↑，搜索目标↑，换Query率↓，点击率↑，长点率↑。</div>
+                                <h4 class="text-base font-bold text-[#2C2C2C] mb-2">【后验指标】真实用户行为验证</h4>
+                                <p class="text-xs text-[#6B6B6B] mb-3">点击层级展开详细说明</p>
+                                <div class="space-y-1 text-sm">
+                                    <details class="pv-metric-layer group">
+                                        <summary class="cursor-pointer list-none flex items-center gap-2 py-2 px-2.5 hover:bg-[#A8703F]/05 transition-colors text-[#4A4A4A]">
+                                            <span class="font-semibold text-[#5C614D] flex-shrink-0">1 交互行为</span>
+                                            <span class="text-xs mono text-[#A8703F] flex-1 min-w-0">翻页率\长点率\点击率</span>
+                                            <span class="pv-layer-chevron text-[#6B6B6B] text-xs flex-shrink-0 transition-transform group-open:rotate-180">▾</span>
+                                        </summary>
+                                        <ul class="mt-2 pl-3 pr-2 pb-2 space-y-1 text-[#4A4A4A] list-none text-xs border-l-2 border-[#A8703F]/20 ml-2">
+                                            <li>✓ 翻页率 ↓ <span class="text-[#6B6B6B]">(一页满足需求,无需翻页)</span></li>
+                                    
+                                            <li>✓ 长点击率 ↑ <span class="text-[#6B6B6B]">(深度消费内容)</span></li>
+                                            <li>✓ 交互点击率 ↑ <span class="text-[#6B6B6B]">(内容吸引力强)</span></li>
+                                        </ul>
+                                    </details>
+                                    <details class="pv-metric-layer group">
+                                        <summary class="cursor-pointer list-none flex items-center gap-2 py-2 px-2.5 hover:bg-[#A8703F]/05 transition-colors text-[#4A4A4A]">
+                                            <span class="font-semibold text-[#5C614D] flex-shrink-0">2 搜索质量</span>
+                                            <span class="text-xs mono text-[#A8703F] flex-1 min-w-0">换Query率\首位点击</span>
+                                            <span class="pv-layer-chevron text-[#6B6B6B] text-xs flex-shrink-0 transition-transform group-open:rotate-180">▾</span>
+                                        </summary>
+                                        <ul class="mt-2 pl-3 pr-2 pb-2 space-y-1 text-[#4A4A4A] list-none text-xs border-l-2 border-[#A8703F]/20 ml-2">
+                                            <li>✓ 换 Query 率 ↓ <span class="text-[#6B6B6B]">(不需要重新搜索)</span></li>
+                                            <li>✓ 首位点击率 ↑ <span class="text-[#6B6B6B]">(第一条就是答案)</span></li>
+                                            <li>✓ 二位点击率 ↑ <span class="text-[#6B6B6B]">(前排结果相关度高)</span></li>
+                                        </ul>
+                                    </details>
+                                    <details class="pv-metric-layer group">
+                                        <summary class="cursor-pointer list-none flex items-center gap-2 py-2 px-2.5 hover:bg-[#A8703F]/05 transition-colors text-[#4A4A4A]">
+                                            <span class="font-semibold text-[#5C614D] flex-shrink-0">3 消费活跃</span>
+                                            <span class="text-xs mono text-[#A8703F] flex-1 min-w-0">有满意消费PV\活跃度</span>
+                                            <span class="pv-layer-chevron text-[#6B6B6B] text-xs flex-shrink-0 transition-transform group-open:rotate-180">▾</span>
+                                        </summary>
+                                        <ul class="mt-2 pl-3 pr-2 pb-2 space-y-1 text-[#4A4A4A] list-none text-xs border-l-2 border-[#A8703F]/20 ml-2">
+                                            <li>✓ 有满意消费 PV ↑ <span class="text-[#6B6B6B]">(用户认可内容)</span></li>
+                                            <li>✓ 用户活跃度 ↑ <span class="text-[#6B6B6B]">(提升留存)</span></li>
+                                        </ul>
+                                    </details>
+                                    <details class="pv-metric-layer group">
+                                        <summary class="cursor-pointer list-none flex items-center gap-2 py-2 px-2.5 hover:bg-[#A8703F]/05 transition-colors text-[#4A4A4A]">
+                                            <span class="font-semibold text-[#5C614D] flex-shrink-0">4 搜索生态</span>
+                                            <span class="text-xs mono text-[#A8703F] flex-1 min-w-0">搜索PV\搜索goal</span>
+                                            <span class="pv-layer-chevron text-[#6B6B6B] text-xs flex-shrink-0 transition-transform group-open:rotate-180">▾</span>
+                                        </summary>
+                                        <ul class="mt-2 pl-3 pr-2 pb-2 space-y-1 text-[#4A4A4A] list-none text-xs border-l-2 border-[#A8703F]/20 ml-2">
+                                            <li>✓ 搜索 PV ↑ <span class="text-[#6B6B6B]">(搜索使用频次增加)</span></li>
+                                            <li>✓ 搜索goal ↑ <span class="text-[#6B6B6B]">(用户找到想要的)</span></li>
+                                        </ul>
+                                    </details>
                                 </div>
                             </div>
                         </div>
                     </div>
 
-                    <!-- Tab 2: 成本-质量平衡 倒V图 -->
-                    <div class="chart-panel" id="baidu-cost">
-                        <h4 class="text-lg font-semibold text-[#4A4A4A] mb-4">成本-质量平衡</h4>
-                        <div class="line-chart-container mb-4">
-                            <svg viewBox="0 0 800 400" class="w-full h-full">
-                                <defs>
-                                    <linearGradient id="costGrad" x1="0%" y1="0%" x2="100%" y2="0%">
-                                        <stop offset="0%" style="stop-color:#A8703F"/>
-                                        <stop offset="100%" style="stop-color:#5C614D"/>
-                                    </linearGradient>
-                                </defs>
-                                <g opacity="0.15">
-                                    <line x1="100" y1="50" x2="100" y2="350" stroke="#A8703F" stroke-width="1"/>
-                                    <line x1="100" y1="350" x2="700" y2="350" stroke="#A8703F" stroke-width="1"/>
-                                </g>
-                                <text x="90" y="360" text-anchor="end" fill="#4A4A4A" font-size="12" class="mono">5元</text>
-                                <text x="90" y="60" text-anchor="end" fill="#4A4A4A" font-size="12" class="mono">8元</text>
-                                <text x="710" y="360" text-anchor="start" fill="#4A4A4A" font-size="12" class="mono">89%</text>
-                                <text x="710" y="60" text-anchor="start" fill="#4A4A4A" font-size="12" class="mono">92%</text>
-                                <!-- 成本↓ 7.2→6.5→6.1  准确率↑ 89→90→92 倒V -->
-                                <path fill="none" stroke="#A8703F" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"
-                                    d="M 100 130 L 400 200 L 700 240"/>
-                                <path fill="none" stroke="#5C614D" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" stroke-dasharray="6,4"
-                                    d="M 100 350 L 400 250 L 700 50"/>
-                                <g><circle cx="100" cy="130" r="8" fill="#A8703F" stroke="#FAF3E9" stroke-width="2"/>
-                                    <text x="100" y="116" text-anchor="middle" fill="#A8703F" font-size="14" font-weight="bold">7.2</text>
-                                    <text x="100" y="380" text-anchor="middle" fill="#2C2C2C" font-size="14" font-weight="600">人工</text>
-                                    <text x="100" y="395" text-anchor="middle" fill="#4A4A4A" font-size="11">89%</text></g>
-                                <g><circle cx="400" cy="200" r="8" fill="#A8703F" stroke="#FAF3E9" stroke-width="2"/>
-                                    <text x="400" y="186" text-anchor="middle" fill="#A8703F" font-size="14" font-weight="bold">6.5</text>
-                                    <text x="400" y="380" text-anchor="middle" fill="#2C2C2C" font-size="14" font-weight="600">混合</text>
-                                    <text x="400" y="395" text-anchor="middle" fill="#4A4A4A" font-size="11">90%</text></g>
-                                <g><circle cx="700" cy="240" r="8" fill="#5C614D" stroke="#FAF3E9" stroke-width="2"/>
-                                    <text x="700" y="226" text-anchor="middle" fill="#5C614D" font-size="14" font-weight="bold">6.1</text>
-                                    <text x="700" y="380" text-anchor="middle" fill="#2C2C2C" font-size="14" font-weight="600">AI+人工</text>
-                                    <text x="700" y="395" text-anchor="middle" fill="#4A4A4A" font-size="11">92%</text></g>
-                            </svg>
-                        </div>
-                        <p class="text-xs text-[#6B6B6B] mono">左Y：元/篇；右Y：准确率。成本↓15%，准确率 92%</p>
-                    </div>
-
-                    <!-- Tab 3: 生产 SOP -->
+                    <!-- Tab 2: 文本 SOP 优化 - 可交互横向流程图（5 列 + 子步骤 + AI 提效） -->
                     <div class="chart-panel" id="baidu-sop">
-                        <h4 class="text-lg font-semibold text-[#4A4A4A] mb-6">生产 SOP 流程</h4>
-                        <div class="flex flex-wrap items-center justify-center gap-2 sm:gap-3 py-6 px-4 bg-[#FAF3E9]/30 border border-[#A8703F]/20 overflow-x-auto">
-                            <span class="px-3 py-2 bg-[#A8703F] text-white font-semibold text-sm whitespace-nowrap">确认需求标准</span>
-                            <span class="text-[#6B6B6B]">→</span>
-                            <span class="px-3 py-2 bg-[#A8703F]/90 text-white font-semibold text-sm whitespace-nowrap">爬取+大模型+人工 SOP 生产</span>
-                            <span class="text-[#6B6B6B]">→</span>
-                            <span class="px-3 py-2 bg-[#5C614D]/90 text-white font-semibold text-sm whitespace-nowrap">抽检与不合格回流</span>
-                            <span class="text-[#6B6B6B]">→</span>
-                            <span class="px-3 py-2 bg-[#5C614D]/80 text-white font-semibold text-sm whitespace-nowrap">C端体验优化</span>
-                            <span class="text-[#6B6B6B]">→</span>
-                            <span class="px-3 py-2 bg-[#A8703F]/70 text-white font-semibold text-sm whitespace-nowrap">先验 GSB</span>
-                            <span class="text-[#6B6B6B]">→</span>
-                            <span class="px-3 py-2 bg-[#A8703F]/60 text-white font-semibold text-sm whitespace-nowrap">后验 AB 实验</span>
-                            <span class="text-[#6B6B6B]">→</span>
-                            <span class="px-3 py-2 bg-[#5C614D] text-white font-semibold text-sm whitespace-nowrap">迭代推全</span>
+                        <h4 class="text-lg font-semibold text-[#4A4A4A] mb-4">文本 SOP 优化：可交互流程图</h4>
+                        <p class="text-xs text-[#6B6B6B] mb-4">悬停或点击列查看详情</p>
+                        <div class="sop-flow-wrap flex py-6 px-4 bg-[#FAF3E9]/30 border border-[#A8703F]/20 overflow-x-auto">
+                            <div class="flex flex-1 min-w-[720px] gap-0">
+                                <div class="sop-column sop-node flex-1 min-w-0" data-sop="1">
+                                    <div class="sop-col-header">线索收集</div>
+                                    <div class="sop-col-steps"><span>随机标注确认子类</span><span>→</span><span>构建线索有限集</span></div>
+                                </div>
+                                <div class="sop-arrow-wrap w-6 flex-shrink-0 sop-arrow-horz"><span>→</span></div>
+                                <div class="sop-column sop-node flex-1 min-w-0" data-sop="2">
+                                    <div class="sop-col-header">线索分级</div>
+                                    <div class="sop-col-steps"><span>高频→人工定产池</span><span>低频→AI 生产池</span></div>
+                                    <div class="sop-ai-block">协同教研 → 部分字段 AI 生产 → 初级审核 → 回爬取</div>
+                                </div>
+                                <div class="sop-arrow-wrap w-6 flex-shrink-0 sop-arrow-horz"><span>→</span></div>
+                                <div class="sop-column sop-node flex-1 min-w-0" data-sop="3">
+                                    <div class="sop-col-header">爬取</div>
+                                    <div class="sop-col-steps"><span>爬取</span><span>→ 清洗</span><span>→ 入库</span></div>
+                                </div>
+                                <div class="sop-arrow-wrap w-6 flex-shrink-0 sop-arrow-horz"><span>→</span></div>
+                                <div class="sop-column sop-node flex-1 min-w-0" data-sop="4">
+                                    <div class="sop-col-header">人工精编</div>
+                                    <div class="sop-col-steps"><span>精编（人工 + 部分字段 AIGC）</span></div>
+                                    <div class="sop-ai-block">协同教研 → 部分字段 AIGC</div>
+                                </div>
+                                <div class="sop-arrow-wrap w-6 flex-shrink-0 sop-arrow-horz"><span>→</span></div>
+                                <div class="sop-column sop-node flex-1 min-w-0" data-sop="5">
+                                    <div class="sop-col-header">人工审校</div>
+                                    <div class="sop-col-steps"><span>一审 → 二审 → 三审</span></div>
+                                    <div class="sop-ai-block">初级审核 / AI 搜索双重溯源</div>
+                                </div>
+                            </div>
                         </div>
+                        <div id="sop-detail-panel" class="mt-4 glass-card p-4 min-h-[120px] hidden">
+                            <div id="sop-detail-content" class="text-sm text-[#4A4A4A] space-y-2"></div>
+                        </div>
+                        <template id="sop-detail-1">
+                            <div class="font-semibold text-[#2C2C2C] mb-2">线索收集</div>
+                            <ul class="space-y-1 text-[#4A4A4A] list-none"><li>· 随机标注确认子类，构建线索有限集</li><li>· 内容类型：古诗词赏析 / 字词注解</li><li>· 质量要求：准确率 &gt; 90%</li></ul>
+                        </template>
+                        <template id="sop-detail-2">
+                            <div class="font-semibold text-[#2C2C2C] mb-2">线索分级 <span class="text-xs text-[#5C614D]">← AI 提效</span></div>
+                            <ul class="space-y-1 text-[#4A4A4A] list-none"><li>· 高频→人工定产池；低频→AI 生产池</li><li>· 协同教研 → 部分字段 AI 生产 → 初级审核 → 回爬取</li></ul>
+                        </template>
+                        <template id="sop-detail-3">
+                            <div class="font-semibold text-[#2C2C2C] mb-2">爬取</div>
+                            <ul class="space-y-1 text-[#4A4A4A] list-none"><li>· 爬取：从权威源获取基础数据</li><li>· 清洗：去重、格式标准化</li><li>· 入库：结构化存储</li></ul>
+                        </template>
+                        <template id="sop-detail-4">
+                            <div class="font-semibold text-[#2C2C2C] mb-2">人工精编 <span class="text-xs text-[#5C614D]">← AIGC 辅助</span></div>
+                            <ul class="space-y-1 text-[#4A4A4A] list-none"><li>· 精编：人工 + 部分字段 AIGC</li><li>· 大模型：通用模型 + 垂类 LoRA 微调</li><li>· 先验 GSB + AB 实验，核心指标 -8% → +9%</li></ul>
+                        </template>
+                        <template id="sop-detail-5">
+                            <div class="font-semibold text-[#2C2C2C] mb-2">人工审校 + 推全迭代</div>
+                            <ul class="space-y-1 text-[#4A4A4A] list-none"><li>· 一审 → 二审 → 三审；初级审核 / AI 搜索双重溯源</li><li>· 抽检准确率 92%，不合格回流 8%</li><li>· 覆盖 1900 万+ PV，成本 -15%，周更</li></ul>
+                        </template>
                     </div>
 
-                    <!-- 多模态扩展 可折叠（保留） -->
-                    <details class="group mt-6">
-                        <summary class="cursor-pointer list-none flex items-center justify-between py-3 px-4 border border-[#E5E5E5] hover:bg-[#FAF3E9]/30 transition-colors">
-                            <span class="font-semibold text-[#2C2C2C]">多模态扩展</span>
-                            <span class="text-[#6B6B6B] text-sm transition-transform group-open:rotate-180">▾</span>
+                    <!-- 图片/视频多模态探索 可折叠 -->
+                    <details class="group mt-6 video-multimodal-details">
+                        <summary class="cursor-pointer list-none flex items-center justify-between gap-3 py-4 px-4 border border-[#A8703F]/20 bg-[#FAF3E9]/30 hover:bg-[#FAF3E9]/50 transition-colors">
+                            <div class="flex flex-col gap-0.5 flex-1 min-w-0">
+                                <div class="flex items-center gap-2">
+                                    <span class="video-multimodal-arrow-collapsed text-[#A8703F] text-base font-bold select-none">►</span><span class="video-multimodal-arrow-expanded text-[#A8703F] text-base font-bold select-none hidden">▼</span>
+                                    <span class="font-semibold text-[#2C2C2C]">图片/视频多模态AIGC探索</span>
+                                </div>
+                                <div class="video-multimodal-subtitle text-xs text-[#6B6B6B] pl-6">提需求 · 定标准 · 建评测 | 460万+ PV</div>
+                            </div>
+                            <span class="text-[#6B6B6B] text-sm transition-transform group-open:rotate-180 flex-shrink-0">▾</span>
                         </summary>
-                        <div class="border border-t-0 border-[#E5E5E5] p-4 space-y-3 text-sm text-[#4A4A4A]">
-                            <p><strong class="text-[#2C2C2C]">动画视频产线：</strong>覆盖 PV 10 万+，两条视频产线跑通。</p>
-                            <p><strong class="text-[#2C2C2C]">数字人视频规范：</strong>探索数字人视频内容，2 万 PV 试点。</p>
+                        <div class="border border-t-0 border-[#A8703F]/20 p-5 space-y-5 text-sm">
+                            <p class="text-[#4A4A4A] text-center text-xs mono tracking-wider">我的核心职责：提需求 + 定标准 + 建评测</p>
+                            <div>
+                                <h5 class="font-bold text-[#A8703F] mb-3 eval-arch-layer-title">【三产线并行搭建】</h5>
+                                <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+                                    <div class="eval-arch-card p-4 border-l-4 border-[#A8703F]">
+                                        <div class="font-semibold text-[#A8703F] mb-3">笔记图片</div>
+                                        <div class="space-y-2 text-xs">
+                                            <div><span class="font-medium text-[#2C2C2C]">场景定位</span><div class="text-[#6B6B6B] pl-1 mt-0.5">· 知识可视化 · 学习辅助</div></div>
+                                            <div><span class="font-medium text-[#2C2C2C]">标准制定</span><div class="text-[#6B6B6B] pl-1 mt-0.5">· 排版美观性 · 信息密度 · 字段要求</div></div>
+                                            <div><span class="font-medium text-[#2C2C2C]">覆盖规模</span><div class="text-[#A8703F] pl-1 mt-0.5 font-medium">450万 PV</div></div>
+                                        </div>
+                                    </div>
+                                    <div class="eval-arch-card p-4 border-l-4 border-[#5C614D]">
+                                        <div class="font-semibold text-[#5C614D] mb-3">动画视频</div>
+                                        <div class="space-y-2 text-xs">
+                                            <div><span class="font-medium text-[#2C2C2C]">场景定位</span><div class="text-[#6B6B6B] pl-1 mt-0.5">· 诗词意境 · AI动画</div></div>
+                                            <div><span class="font-medium text-[#2C2C2C]">标准制定</span><div class="text-[#6B6B6B] pl-1 mt-0.5">· 贴合意境 · 动画流畅度 · 美学风格</div></div>
+                                            <div><span class="font-medium text-[#2C2C2C]">覆盖规模</span><div class="text-[#5C614D] pl-1 mt-0.5 font-medium">8万 PV</div></div>
+                                        </div>
+                                    </div>
+                                    <div class="eval-arch-card p-4 border-l-4 border-[#A8703F]/70">
+                                        <div class="font-semibold text-[#5C614D] mb-3">数字人视频</div>
+                                        <div class="space-y-2 text-xs">
+                                            <div><span class="font-medium text-[#2C2C2C]">场景定位</span><div class="text-[#6B6B6B] pl-1 mt-0.5">· 沉浸解读 · 口型同步</div></div>
+                                            <div><span class="font-medium text-[#2C2C2C]">标准制定</span><div class="text-[#6B6B6B] pl-1 mt-0.5">· 数字人形象规范 · 朗诵节奏标准 · 背景适配规则</div></div>
+                                            <div><span class="font-medium text-[#2C2C2C]">覆盖规模</span><div class="text-[#A8703F] pl-1 mt-0.5 font-medium">2万 PV</div></div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div>
+                                <h5 class="font-bold text-[#A8703F] mb-3 eval-arch-layer-title alt">【核心成果】</h5>
+                                <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
+                                    <div class="eval-arch-card p-3 flex items-start gap-2"><span class="text-[#5C614D] font-bold flex-shrink-0">✓</span><span class="text-[#4A4A4A] text-xs">跑通三条生产流程 (图片/动画/数字人)</span></div>
+                                    <div class="eval-arch-card p-3 flex items-start gap-2"><span class="text-[#5C614D] font-bold flex-shrink-0">✓</span><span class="text-[#4A4A4A] text-xs">制定汉语垂类下 AIGC 多模态理想态规范</span></div>
+                                    <div class="eval-arch-card p-3 flex items-start gap-2"><span class="text-[#5C614D] font-bold flex-shrink-0">✓</span><span class="text-[#4A4A4A] text-xs">单条价值递增验证</span></div>
+                                </div>
+                            </div>
                         </div>
                     </details>
                 </div>
 
-                <!-- 延申项目：垂搜知识点（基于基建） -->
-                <div class="glass-card p-8 mb-8">
-                    <h3 class="text-xl font-bold text-[#2C2C2C] mb-2">基于基建的延申项目</h3>
-                    <p class="text-sm text-[#6B6B6B] mb-6">垂搜知识点：从需求摸底、内容建设到产品落地的学科知识图谱</p>
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                        <div>
-                            <p class="text-sm text-[#2C2C2C] leading-relaxed mb-4">从 0 到 1 搭建学科知识点内容及图谱，填补搜索需求空白，直接影响日均 100 万+ PV，生态场景体验增益日均 1200 万+ PV。</p>
-                            <p class="text-sm text-[#4A4A4A]">使用 BERT 分类模型进行知识图谱标注，针对试题提升末级、四级知识点模型准召至 70%/95%，结构化试题覆盖率达 40%。</p>
+                <!-- 延申项目：垂搜知识点（基于基建）- 可折叠 -->
+                <details class="extend-project-details group mt-6 mb-8">
+                    <summary class="cursor-pointer list-none flex items-center justify-between gap-3 py-4 px-5 border border-[#A8703F]/20 transition-colors">
+                        <div class="flex flex-col gap-0.5 flex-1 min-w-0">
+                            <div class="flex items-center gap-2">
+                                <span class="extend-arrow-collapsed text-[#A8703F] text-base font-bold select-none">►</span>
+                                <span class="extend-arrow-expanded text-[#A8703F] text-base font-bold select-none hidden">▼</span>
+                                <h3 class="text-xl font-bold text-[#2C2C2C]">其他垂类项目</h3>
+                            </div>
+                            <div class="extend-project-subtitle text-xs text-[#6B6B6B] pl-6">垂搜知识点：从需求摸底、内容建设到产品落地的学科知识图谱</div>
                         </div>
-                        <div class="grid grid-cols-2 gap-3">
-                            <div class="glass-card p-4 text-center">
-                                <div class="text-xl font-black text-[#A8703F]">100万+</div>
-                                <div class="text-xs text-[#6B6B6B] mt-1 mono">日均 PV</div>
+                        <span class="text-[#6B6B6B] text-sm transition-transform group-open:rotate-180 flex-shrink-0">▾</span>
+                    </summary>
+                    <div class="border border-t-0 border-[#A8703F]/20 p-6">
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                            <div>
+                                <p class="text-sm text-[#2C2C2C] leading-relaxed mb-4">从 0 到 1 搭建学科知识点内容及图谱，填补搜索需求空白，直接影响日均 100 万+ PV，生态场景体验增益日均 1200 万+ PV。</p>
+                                <p class="text-sm text-[#4A4A4A]">使用 BERT 分类模型进行知识图谱标注，针对试题提升末级、四级知识点模型准召至 70%/95%，结构化试题覆盖率达 40%。</p>
                             </div>
-                            <div class="glass-card p-4 text-center">
-                                <div class="text-xl font-black text-[#A8703F]">1200万+</div>
-                                <div class="text-xs text-[#6B6B6B] mt-1 mono">生态日均增益 PV</div>
-                            </div>
-                            <div class="glass-card p-4 text-center">
-                                <div class="text-lg font-black text-[#A8703F]">70% / 95%</div>
-                                <div class="text-xs text-[#6B6B6B] mt-1 mono">末级/四级准召</div>
-                            </div>
-                            <div class="glass-card p-4 text-center">
-                                <div class="text-xl font-black text-[#A8703F]">40%</div>
-                                <div class="text-xs text-[#6B6B6B] mt-1 mono">结构化覆盖率</div>
+                            <div class="grid grid-cols-2 gap-3">
+                                <div class="glass-card p-4 text-center">
+                                    <div class="text-xl font-black text-[#A8703F]">100万+</div>
+                                    <div class="text-xs text-[#6B6B6B] mt-1 mono">日均 PV</div>
+                                </div>
+                                <div class="glass-card p-4 text-center">
+                                    <div class="text-xl font-black text-[#A8703F]">1200万+</div>
+                                    <div class="text-xs text-[#6B6B6B] mt-1 mono">生态日均增益 PV</div>
+                                </div>
+                                <div class="glass-card p-4 text-center">
+                                    <div class="text-lg font-black text-[#A8703F]">70% / 95%</div>
+                                    <div class="text-xs text-[#6B6B6B] mt-1 mono">末级/四级准召</div>
+                                </div>
+                                <div class="glass-card p-4 text-center">
+                                    <div class="text-xl font-black text-[#A8703F]">40%</div>
+                                    <div class="text-xs text-[#6B6B6B] mt-1 mono">结构化覆盖率</div>
+                                </div>
                             </div>
                         </div>
                     </div>
-                </div>
+                </details>
 
               
                
-                <p class="mt-2 text-xs text-[#6B6B6B] mono">数据口径：随机 GSB -8%→9% 为迭代前后对比；成本下降 15% 对标同量级人工建设；92% 为每周抽检的内容准确率；40% 提效按字/词条均成本；1900 万+ PV 为汉语垂类（字、古诗词等）季度末。</p>
                 <div class="incomplete-line incomplete-line-horizontal"></div>
                 <div class="incomplete-line incomplete-line-vertical"></div>
             </div>
@@ -2459,7 +2536,7 @@ h1 {
         </section>
 
         <!-- Project 3: 高考 Agent（30%）· 对齐营销 Agent 版式 -->
-        <section id="project3" class="py-20 px-4 sm:px-6 lg:px-8 reveal">
+        <section id="project3" class="py-20 px-4 sm:px-6 lg:px-8 reveal section-grid-visible">
             <div class="max-w-7xl mx-auto">
                 <div class="mb-12">
                     <div class="inline-flex items-center gap-2 px-3 py-1.5 bg-[#A8703F]/10 border border-[#5C614D]/20 mb-4" style="border-radius: 0;">
@@ -2529,13 +2606,13 @@ h1 {
                                     <rect x="260" y="20" width="200" height="120" fill="url(#gkGrad2)" stroke="#5C614D" stroke-width="2" rx="4"/>
                                     <text x="360" y="55" text-anchor="middle" fill="#2C2C2C" font-size="14" font-weight="600">工具调度层</text>
                                     <text x="360" y="78" text-anchor="middle" fill="#4A4A4A" font-size="11">RAG 实时库 · 策略工具</text>
-                                    <text x="360" y="98" text-anchor="middle" fill="#6B6B6B" font-size="10">响应 &lt; 300ms · 场景覆盖 80%</text>
+                                    <text x="360" y="98" text-anchor="middle" fill="#6B6B6B" font-size="10">响应 &lt; 300ms · 场景覆盖 100%</text>
                                     <path d="M 460 80 L 500 80" stroke="#5C614D" stroke-width="2" fill="none"/>
                                     <path d="M 480 70 L 500 80 L 480 90" stroke="#5C614D" stroke-width="1.5" fill="none"/>
                                     <rect x="500" y="20" width="180" height="120" fill="url(#gkGrad1)" stroke="#A8703F" stroke-width="2" rx="4"/>
                                     <text x="590" y="55" text-anchor="middle" fill="#2C2C2C" font-size="14" font-weight="600">格式生成层</text>
                                     <text x="590" y="78" text-anchor="middle" fill="#4A4A4A" font-size="11">10+ 套固化模板</text>
-                                    <text x="590" y="98" text-anchor="middle" fill="#6B6B6B" font-size="10">满意度 90%</text>
+                                    <text x="590" y="98" text-anchor="middle" fill="#6B6B6B" font-size="10">QU2分率 90%+</text>
                                 </svg>
                             </div>
                             <p class="text-sm text-[#4A4A4A]">意图识别层圈定 8 大核心场景，20 万 Query 训练集微调；工具调度层 RAG 实时数据库 + 志愿填报策略工具，响应 &lt; 300ms；格式生成层 10+ 套模板保证结构化呈现与满意度。</p>
@@ -2568,41 +2645,48 @@ h1 {
                         <div class="text-sm text-[#4A4A4A]">QU 3分满意度</div>
                     </div>
                 </div>
-            </div>
-        </section>
 
-        <!-- 教辅 Agent（20%） -->
-        <section id="project4" class="py-16 px-4 sm:px-6 lg:px-8 reveal">
-            <div class="max-w-7xl mx-auto">
-                <div class="mb-6">
-                    <div class="inline-flex items-center gap-2 px-3 py-1.5 bg-[#A8703F]/10 border border-[#A8703F]/20 mb-3" style="border-radius: 0;">
-                        <span class="mono text-xs text-[#A8703F] tracking-wider">百度 · 2023.09</span>
+                <!-- 教辅 Agent（可折叠）· 对齐其他垂类项目 -->
+                <details class="extend-project-details group mt-6 mb-8" id="project4">
+                    <summary class="cursor-pointer list-none flex items-center justify-between gap-3 py-4 px-5 border border-[#A8703F]/20 transition-colors">
+                        <div class="flex flex-col gap-0.5 flex-1 min-w-0">
+                            <div class="flex items-center gap-2">
+                                <span class="extend-arrow-collapsed text-[#A8703F] text-base font-bold select-none">►</span>
+                                <span class="extend-arrow-expanded text-[#A8703F] text-base font-bold select-none hidden">▼</span>
+                                <h3 class="text-xl font-bold text-[#2C2C2C]">AI 教辅 Agent 从 0 到 1</h3>
+                            </div>
+                            <div class="extend-project-subtitle text-xs text-[#6B6B6B] pl-6">RAG + Few-shot 解题准确率 43%→80%，全年销量突破 1000 万元</div>
+                        </div>
+                        <span class="text-[#6B6B6B] text-sm transition-transform group-open:rotate-180 flex-shrink-0">▾</span>
+                    </summary>
+                    <div class="border border-t-0 border-[#A8703F]/20 p-6">
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                            <div>
+                                <p class="text-sm text-[#2C2C2C] leading-relaxed mb-4">从 0 到 1 构建 AI 教辅产品框架，跑通 MVP 实现 3 大类目教辅接入。设计问、查、学、测核心链路，用户平均单日交互轮次 6+（超竞品 200%），高 LTV 用户沉淀超 10 万。</p>
+                                <p class="text-sm text-[#4A4A4A]">付费场景优化带动核心类目付费率 +33%，新内容权益从 0 到日均 180+ 单，高留存 11%+ 带动 LTV 增长。</p>
+                            </div>
+                            <div class="grid grid-cols-2 gap-3">
+                                <div class="glass-card p-4 text-center">
+                                    <div class="text-xl font-black text-[#A8703F]">43% <span class="text-[#9A9A9A] font-light">→</span> 80%</div>
+                                    <div class="text-xs text-[#6B6B6B] mt-1 mono">解题准确率</div>
+                                </div>
+                                <div class="glass-card p-4 text-center">
+                                    <div class="text-xl font-black text-[#A8703F]">1000万</div>
+                                    <div class="text-xs text-[#6B6B6B] mt-1 mono">全年销量</div>
+                                </div>
+                                <div class="glass-card p-4 text-center">
+                                    <div class="text-xl font-black text-[#A8703F]">6+ 轮</div>
+                                    <div class="text-xs text-[#6B6B6B] mt-1 mono">日均交互轮次</div>
+                                </div>
+                            </div>
+                        </div>
                     </div>
-                    <h2 class="text-2xl sm:text-3xl font-black mb-2">AI 教辅 Agent 从 0 到 1</h2>
-                    <p class="text-[#4A4A4A] text-sm">与行业头部出版社合作，RAG + Few-shot 解题准确率 43%→80%，全年销量突破 1000 万元</p>
-                </div>
-                <div class="glass-card p-6 border-l-4 border-[#5C614D] mb-6">
-                    <p class="text-[#2C2C2C] text-sm leading-relaxed mb-4">从 0 到 1 构建 AI 教辅产品框架，跑通 MVP 实现 3 大类目教辅接入。设计问、查、学、测核心链路，用户平均单日交互轮次 6+（超竞品 200%），高 LTV 用户沉淀超 10 万。付费场景优化带动核心类目付费率 +33%，新内容权益从 0 到日均 180+ 单，高留存 11%+ 带动 LTV 增长。</p>
-                </div>
-                <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
-                    <div class="glass-card p-4 text-center">
-                        <div class="text-xl font-black text-[#A8703F]">43% <span class="text-[#9A9A9A] font-light">→</span> 80%</div>
-                        <div class="text-xs text-[#6B6B6B] mt-1 mono">解题准确率</div>
-                    </div>
-                    <div class="glass-card p-4 text-center">
-                        <div class="text-xl font-black text-[#A8703F]">1000万</div>
-                        <div class="text-xs text-[#6B6B6B] mt-1 mono">全年销量</div>
-                    </div>
-                    <div class="glass-card p-4 text-center">
-                        <div class="text-xl font-black text-[#A8703F]">6+ 轮</div>
-                        <div class="text-xs text-[#6B6B6B] mt-1 mono">日均交互轮次</div>
-                    </div>
-                </div>
+                </details>
             </div>
         </section>
 
         <!-- Methodology: 评测体系 -->
-        <section id="methodology" class="py-20 px-4 sm:px-6 lg:px-8 reveal">
+        <section id="methodology" class="py-20 px-4 sm:px-6 lg:px-8 reveal section-grid-visible">
             <div class="max-w-7xl mx-auto">
                 <div class="mb-12">
                     <div class="inline-flex items-center gap-2 px-3 py-1.5  bg-[#A8703F]/10 border border-[#A8703F]/20 mb-4">
@@ -2612,62 +2696,162 @@ h1 {
                     <p class="text-xl text-[#4A4A4A]">优化业务导向的评测体系建设</p>
                 </div>
 
-                <!-- 4步评测流程 -->
-                <div class="glass-card p-8 mb-8">
-                    <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
-                        <div class="pipeline-step bg-gradient-to-br from-orange-900/20 to-orange-800/10  p-6 border border-[#A8703F]/30">
-                            <div class="w-10 h-10  bg-[#A8703F] flex items-center justify-center text-lg font-bold mb-3">1</div>
-                            <div class="font-bold mb-2">评测目标明确</div>
-                            <div class="text-sm text-[#4A4A4A]">
-                                摸底 / 策略迭代 / 业务资源分配
-                            </div>
-                        </div>
-                        <div class="pipeline-step bg-gradient-to-br from-[#5C614D]/20 to-[#5C614D]/10  p-6 border border-[#5C614D]/30">
-                            <div class="w-10 h-10  bg-[#5C614D] flex items-center justify-center text-lg font-bold mb-3">2</div>
-                            <div class="font-bold mb-2">评测集标准对齐</div>
-                            <div class="text-sm text-[#4A4A4A]">
-                                ROI、数据代表性、标注统一性
-                            </div>
-                        </div>
-                        <div class="pipeline-step bg-gradient-to-br from-green-900/20 to-green-800/10  p-6 border border-[#A8703F]/30">
-                            <div class="w-10 h-10  bg-[#A8703F] flex items-center justify-center text-lg font-bold mb-3">3</div>
-                            <div class="font-bold mb-2">归因闭环落地</div>
-                            <div class="text-sm text-[#4A4A4A]">
-                                对应可执行优化动作+责任方
-                            </div>
-                        </div>
-                        <div class="pipeline-step bg-gradient-to-br from-orange-900/20 to-orange-800/10  p-6 border border-[#A8703F]/30">
-                            <div class="w-10 h-10  bg-[#A8703F] flex items-center justify-center text-lg font-bold mb-3">4</div>
-                            <div class="font-bold mb-2">基建支持迭代</div>
-                            <div class="text-sm text-[#4A4A4A]">
-                                自动化平台、风险预警、成本拆解
-                            </div>
-                        </div>
-                    </div>
-                </div>
+                
 
-                <!-- 核心理念：评测如何服务产品与体验目标 -->
-                <div class="glass-card p-8 mb-8 border-l-4 border-[#5C614D]">
-                    <h3 class="text-lg font-bold text-[#5C614D] mb-4">评测如何服务产品与体验目标</h3>
-                    <p class="text-[#2C2C2C] leading-relaxed mb-4">
-                        评测不是终点，而是持续优化的起点。通过归因发现「用户为何不满意」、区分是召回问题还是表达问题，
-                        把结果转化为可执行的产品决策（改策略边界、改提示词、改展示），而不是只看总体分数。
-                        双 Agent 自动化评测将策略验证周期从「天级」缩短至「小时级」，迭代效率提升约 3X，人机一致率 92%。
-                    </p>
-                </div>
+               
+                
 
                 <!-- 评测驱动迭代闭环：项目2 自动化评测效果（展示对齐项目3） -->
-                <div class="glass-card p-8">
+                <div class="glass-card p-8" id="evalArchArea">
                     <div class="flex items-center justify-between flex-wrap gap-4 mb-6">
                         <h3 class="text-lg font-bold flex items-center gap-2">
                             <div class="w-1 h-6 bg-[#A8703F] rounded"></div>
                             评测驱动迭代闭环
                         </h3>
-                        <span class="mono text-xs text-[#6B6B6B] tracking-wider">营销 Agent（项目2）· 双 Agent 自动化评测</span>
+                        <div class="flex gap-0 border border-[#A8703F]/20">
+                            <button type="button" class="chart-tab px-4 py-2 text-sm font-medium transition-all active" data-chart="eval-arch-ai">AI 搜索评测</button>
+                            <button type="button" class="chart-tab px-4 py-2 text-sm font-medium transition-all" data-chart="eval-arch-ddx">自动化评测</button>
+                        </div>
                     </div>
                     <p class="text-sm text-[#4A4A4A] mb-6 leading-relaxed">
                         通过双 Agent 自动化评测体系，将策略验证周期从「天级」缩短至「小时级」，归因结果可直接指导产品决策（改策略边界、提示词、展示）。
                     </p>
+                    <div class="mb-6">
+                        <div class="chart-panel show" id="eval-arch-ai">
+                            <div class="eval-arch-dual-agent border-l-4 border-t border-r border-b border-[#A8703F]/25 overflow-x-auto text-sm" style="min-height:200px">
+                                <div class="text-center font-bold text-[#2C2C2C] py-3 border-b border-[#A8703F]/20 bg-[#FAF3E9]/30">AI 搜索质量评测体系架构</div>
+                                <div class="flex flex-wrap justify-center items-center gap-2 py-3 px-4 border-b border-[#A8703F]/10 bg-[#FAF3E9]/15">
+                                    <span class="eval-pipeline-node px-2.5 py-1.5 text-xs font-medium text-[#2C2C2C]">评测目标</span>
+                                    <span class="text-[#A8703F] font-bold text-sm">→</span>
+                                    <span class="eval-pipeline-node px-2.5 py-1.5 text-xs font-medium text-[#2C2C2C]">链路拆解</span>
+                                    <span class="text-[#A8703F] font-bold text-sm">→</span>
+                                    <span class="eval-pipeline-node px-2.5 py-1.5 text-xs font-medium text-[#2C2C2C]">评测执行</span>
+                                    <span class="text-[#A8703F] font-bold text-sm">→</span>
+                                    <span class="eval-pipeline-node px-2.5 py-1.5 text-xs font-medium text-[#2C2C2C]">归因优化</span>
+                                </div>
+                                <div class="px-4 py-2 eval-arch-layer-title font-semibold text-[#5C614D] bg-[#FAF3E9]/20 border-b border-[#A8703F]/15">【1. 评测目标】明确评测目的</div>
+                                <div class="grid grid-cols-1 sm:grid-cols-3 gap-3 p-4">
+                                    <div class="eval-arch-card p-3 relative">
+                                        <span class="absolute top-2 right-2 text-[10px] px-1.5 py-0.5 bg-[#A8703F]/15 text-[#A8703F] border border-[#A8703F]/25 font-medium">粗颗粒度评测</span>
+                                        <div class="font-semibold text-[#2C2C2C] mb-1">摸底评估</div>
+                                        <div class="text-[#6B6B6B] text-xs space-y-0.5"><div><span class="text-[#5C614D] font-medium">•</span> 识别瓶颈</div><div><span class="text-[#5C614D] font-medium">•</span> 全链路扫描</div></div>
+                                    </div>
+                                    <div class="eval-arch-card p-3 relative">
+                                        <span class="absolute top-2 right-2 text-[10px] px-1.5 py-0.5 bg-[#5C614D]/15 text-[#5C614D] border border-[#5C614D]/25 font-medium">细颗粒度评测</span>
+                                        <div class="font-semibold text-[#2C2C2C] mb-1">策略迭代</div>
+                                        <div class="text-[#6B6B6B] text-xs space-y-0.5"><div><span class="text-[#5C614D] font-medium">•</span> AB验证</div><div><span class="text-[#5C614D] font-medium">•</span> 快速归因</div></div>
+                                    </div>
+                                    <div class="eval-arch-card p-3 relative">
+                                        <span class="absolute top-2 right-2 text-[10px] px-1.5 py-0.5 bg-[#A8703F]/10 text-[#6B6B6B] border border-[#A8703F]/20 font-medium">中立性评测</span>
+                                        <div class="font-semibold text-[#2C2C2C] mb-1">资源分配</div>
+                                        <div class="text-[#6B6B6B] text-xs space-y-0.5"><div><span class="text-[#5C614D] font-medium">•</span> 定优先级</div><div><span class="text-[#5C614D] font-medium">•</span> ROI评估</div></div>
+                                    </div>
+                                </div>
+                                <div class="py-2 text-[#A8703F] text-center text-lg">↓</div>
+                                <div class="px-4 py-2 eval-arch-layer-title alt font-semibold text-[#5C614D] bg-[#FAF3E9]/20 border-b border-[#A8703F]/15">【2. 链路拆解】定义评测颗粒度和归因标签</div>
+                                <div class="grid grid-cols-1 lg:grid-cols-[1fr_auto_1fr_auto_1fr] gap-3 lg:gap-4 p-4 items-stretch">
+                                    <div class="eval-arch-card p-4 border-l-4 border-[#A8703F] space-y-3">
+                                        <div class="font-semibold text-[#A8703F] text-sm">评测维度拆解</div>
+                                        <div class="space-y-2">
+                                            <div><div class="font-medium text-[#2C2C2C] text-xs">端到端评测</div><div class="text-[#6B6B6B] text-xs pl-2">• 整体3分率 · 用户满意度</div></div>
+                                            <div><div class="font-medium text-[#2C2C2C] text-xs">环节评测</div><div class="text-[#6B6B6B] text-xs pl-2">• 召回准确率 · 排序质量 · 生成准确性</div></div>
+                                        </div>
+                                    </div>
+                                    <span class="self-center text-[#A8703F] font-bold hidden lg:inline">→</span>
+                                    <div class="eval-arch-card p-4 border-l-4 border-[#5C614D] space-y-2">
+                                        <div class="font-semibold text-[#5C614D] text-sm">RAG 链路拆解</div>
+                                        <div class="space-y-1.5 text-xs">
+                                            <div><span class="font-medium text-[#2C2C2C]">Query理解层</span><span class="text-[#6B6B6B]"> 意图识别·实体抽取·Query改写</span></div>
+                                            <div><span class="font-medium text-[#2C2C2C]">信源召回层</span><span class="text-[#6B6B6B]"> 混合检索·信源过滤</span></div>
+                                            <div><span class="font-medium text-[#2C2C2C]">精排层</span><span class="text-[#6B6B6B]"> Reranker·多维排序</span></div>
+                                            <div><span class="font-medium text-[#2C2C2C]">生成层</span><span class="text-[#6B6B6B]"> LLM生成·结构化输出</span></div>
+                                        </div>
+                                    </div>
+                                    <span class="self-center text-[#A8703F] font-bold hidden lg:inline">→</span>
+                                    <div class="eval-arch-card p-4 border-l-4 border-[#A8703F]/70 space-y-2">
+                                        <div class="font-semibold text-[#5C614D] text-sm">归因标签定义</div>
+                                        <div class="space-y-1.5 text-xs">
+                                            <div class="text-[#6B6B6B]">意图理解错误 · 信源召回失败 · 排序质量问题 · 输出结构差</div>
+                                            <div class="text-[#6B6B6B]">低质信源占比 · 时效性不足 · 权威性缺失</div>
+                                            <div class="text-[#6B6B6B]">Reranker失效 · 相关性误判</div>
+                                            <div class="text-[#6B6B6B]">幻觉产生 · 引用错误 · 格式不规范</div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="py-2 text-[#A8703F] text-center text-lg">↓</div>
+                                <div class="px-4 py-2 eval-arch-layer-title font-semibold text-[#5C614D] bg-[#FAF3E9]/20 border-b border-[#A8703F]/15">【3. 评测执行】根据场景选择评测方式</div>
+                                <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 p-4">
+                                    <div class="eval-arch-card p-4 border-l-4 border-[#A8703F]">
+                                        <div class="font-semibold text-[#A8703F] mb-2">人工评测</div>
+                                        <div class="space-y-1 text-[#4A4A4A] text-xs"><div><span class="text-[#5C614D] font-medium">📌 核心场景</span> 金标准构建</div><div><span class="text-[#5C614D] font-medium">💰 成本高</span> 500条/3天</div></div>
+                                    </div>
+                                    <div class="eval-arch-card p-4 border-l-4 border-[#5C614D]">
+                                        <div class="font-semibold text-[#5C614D] mb-2">混合评测 · 双Agent</div>
+                                        <div class="space-y-1 text-[#4A4A4A] text-xs"><div><span class="text-[#5C614D] font-medium">⚖️ LLM-as-Judge</span> 人机对齐92%</div><div><span class="text-[#5C614D] font-medium">💰 成本中</span> 500条/1天</div></div>
+                                    </div>
+                                    <div class="eval-arch-card p-4 border-l-4 border-[#A8703F]/50">
+                                        <div class="font-semibold text-[#2C2C2C] mb-2">自动化评测</div>
+                                        <div class="space-y-1 text-[#4A4A4A] text-xs"><div><span class="text-[#5C614D] font-medium">🔧 规则引擎</span> 大规模回归</div><div><span class="text-[#5C614D] font-medium">💰 低成本</span> 1万条/1天</div></div>
+                                    </div>
+                                </div>
+                                <div class="py-2 text-[#A8703F] text-center text-lg">↓</div>
+                                <div class="px-4 py-2 eval-arch-layer-title alt font-semibold text-[#5C614D] bg-[#FAF3E9]/20 border-b border-[#A8703F]/15">【4. 归因优化】问题定位到可执行动作</div>
+                                <div class="flex flex-wrap justify-center items-center gap-2 py-4 px-4">
+                                    <div class="eval-arch-card px-4 py-3 text-center min-w-[100px]"><div class="font-semibold text-[#2C2C2C] text-sm">归因分析</div><div class="text-[#6B6B6B] text-xs mt-0.5">信源·意图·排序</div></div>
+                                    <span class="text-[#A8703F] font-bold">→</span>
+                                    <div class="eval-arch-card px-4 py-3 text-center min-w-[100px]"><div class="font-semibold text-[#2C2C2C] text-sm">责任归属</div><div class="text-[#6B6B6B] text-xs mt-0.5">搜索引擎·LLM·算法</div></div>
+                                    <span class="text-[#A8703F] font-bold">→</span>
+                                    <div class="eval-arch-card px-4 py-3 text-center min-w-[100px]"><div class="font-semibold text-[#2C2C2C] text-sm">优化动作</div><div class="text-[#6B6B6B] text-xs mt-0.5">扩充信源·Prompt·Reranker</div></div>
+                                </div>
+                               
+                            </div>
+                        </div>
+                        <div class="chart-panel" id="eval-arch-ddx">
+                            <div class="eval-arch-dual-agent border-l-4 border-t border-r border-b border-[#A8703F]/25 overflow-x-auto text-sm" style="min-height:200px">
+                                <div class="text-center font-bold text-[#2C2C2C] py-3 border-b border-[#A8703F]/20 bg-[#FAF3E9]/30">双 Agent 自动化评测平台</div>
+                                <div class="px-4 py-2 eval-arch-layer-title font-semibold text-[#5C614D] bg-[#FAF3E9]/20 border-b border-[#A8703F]/15">【输入层】数据源</div>
+                                <div class="grid grid-cols-1 sm:grid-cols-3 gap-3 p-4">
+                                    <div class="eval-arch-card p-3"><div class="font-semibold text-[#2C2C2C] mb-0.5">真实对话日志</div><div class="text-[#6B6B6B] text-xs">核心对话场景收敛</div></div>
+                                    <div class="eval-arch-card p-3"><div class="font-semibold text-[#2C2C2C] mb-0.5">画像模拟</div><div class="text-[#6B6B6B] text-xs">正负面画像性格目的设置</div></div>
+                                    <div class="eval-arch-card p-3"><div class="font-semibold text-[#2C2C2C] mb-0.5">红队测试集</div><div class="text-[#6B6B6B] text-xs">压力测试 边界探测 特殊场景</div></div>
+                                </div>
+                                <div class="py-2 text-[#A8703F] text-center text-lg">↓</div>
+                                <div class="px-4 py-2 eval-arch-layer-title alt font-semibold text-[#5C614D] bg-[#FAF3E9]/20 border-b border-[#A8703F]/15">【Agent 层】双 Agent 协同</div>
+                                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 p-4">
+                                    <div class="eval-arch-card p-4 border-l-4 border-[#A8703F]">
+                                        <div class="font-semibold text-[#A8703F] mb-2">用户 Agent (User Simulator)</div>
+                                        <div class="space-y-1 text-[#4A4A4A]"><div><span class="text-[#5C614D] font-medium">🎭 角色扮演</span> 基于真实画像·多轮对话</div><div><span class="text-[#5C614D] font-medium">🎯 场景覆盖</span> 正常40% / 压力25% / 红队25%</div><div><span class="text-[#5C614D] font-medium">🔄 自动化</span> 批量并发 多轮生成</div></div>
+                                    </div>
+                                    <div class="eval-arch-card p-4 border-l-4 border-[#5C614D]">
+                                        <div class="font-semibold text-[#5C614D] mb-2">裁判 Agent (Judge LLM)</div>
+                                        <div class="space-y-1 text-[#4A4A4A]"><div><span class="text-[#5C614D] font-medium">⚖️ 多维度</span> 3分率·幻觉率·话术·人设·合规</div><div><span class="text-[#5C614D] font-medium">📊 归因</span> 问题类型·责任方·优化建议</div><div><span class="text-[#5C614D] font-medium">🤝 人机对齐</span> 一致率 79%→92%</div></div>
+                                    </div>
+                                </div>
+                                <div class="py-2 text-[#A8703F] text-center text-lg">↓</div>
+                                <div class="px-4 py-2 eval-arch-layer-title font-semibold text-[#5C614D] bg-[#FAF3E9]/20 border-b border-[#A8703F]/15">【执行层】Pipeline 编排</div>
+                                <div class="flex flex-wrap justify-center items-center gap-2 py-4 px-4">
+                                    <span class="eval-pipeline-node px-3 py-2 font-medium text-[#2C2C2C]">场景采样</span>
+                                    <span class="text-[#A8703F] font-bold">→</span>
+                                    <span class="eval-pipeline-node px-3 py-2 font-medium text-[#2C2C2C]">用户Agent</span>
+                                    <span class="text-[#A8703F] font-bold">→</span>
+                                    <span class="eval-pipeline-node px-3 py-2 font-medium text-[#2C2C2C]">被测模型</span>
+                                    <span class="text-[#A8703F] font-bold">→</span>
+                                    <span class="eval-pipeline-node px-3 py-2 font-medium text-[#2C2C2C]">裁判Agent</span>
+                                    <span class="text-[#A8703F] font-bold">→</span>
+                                    <span class="eval-pipeline-node px-3 py-2 font-medium text-[#2C2C2C]">归因分析</span>
+                                </div>
+                                <div class="px-4 pb-2 text-[#6B6B6B] text-xs text-center">随机抽样X条 · 20-30轮对话 · 流式输出 · 实时评估</div>
+                                <div class="py-2 text-[#A8703F] text-center text-lg">↓</div>
+                                <div class="px-4 py-2 eval-arch-layer-title alt font-semibold text-[#5C614D] bg-[#FAF3E9]/20 border-b border-[#A8703F]/15">【输出层】评测报告 & 闭环</div>
+                                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 p-4">
+                                    <div class="eval-arch-card p-3"><div class="font-semibold text-[#2C2C2C] mb-0.5">评测报告</div><div class="text-[#6B6B6B] text-xs">3分率·幻觉率·覆盖度·一致性</div></div>
+                                    <div class="eval-arch-card p-3"><div class="font-semibold text-[#2C2C2C] mb-0.5">归因分析</div><div class="text-[#6B6B6B] text-xs">幻觉类型·高频问题·责任归属</div></div>
+                                    <div class="eval-arch-card p-3"><div class="font-semibold text-[#2C2C2C] mb-0.5">优化建议</div><div class="text-[#6B6B6B] text-xs">Prompt·RAG·模型调优·规则</div></div>
+                                    <div class="eval-arch-card p-3"><div class="font-semibold text-[#2C2C2C] mb-0.5">监控预警</div><div class="text-[#6B6B6B] text-xs">指标告警·成本·Token·并发</div></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                     <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
                         <div class="glass-card p-6 text-center">
                             <div class="text-3xl font-black text-[#A8703F] mb-2">3X</div>
@@ -2688,7 +2872,7 @@ h1 {
         </section>
 
         <!-- Skills & Toolkits -->
-        <section id="skills" class="py-20 px-4 sm:px-6 lg:px-8 reveal">
+        <section id="skills" class="py-20 px-4 sm:px-6 lg:px-8 reveal section-grid-visible">
             <div class="max-w-7xl mx-auto">
                 <div class="mb-12">
                     <div class="mono text-xs text-[#6B6B6B] mb-3 tracking-wider">CAPABILITIES</div>
@@ -2788,9 +2972,9 @@ h1 {
         </section>
 
         <!-- Footer -->
-        <footer class="py-10 px-4 sm:px-6 lg:px-8 border-t border-[#A8703F]/20">
+        <footer class="py-10 px-4 sm:px-6 lg:px-8 border-t border-[#A8703F]/20 section-grid-visible">
             <div class="max-w-7xl mx-auto text-center">
-                <div class="mono text-sm text-[#6B6B6B]">© 2025</div>
+                <div class="mono text-sm text-[#6B6B6B]">© 2026</div>
             </div>
         </footer>
 
@@ -2799,18 +2983,22 @@ h1 {
 
         <!-- 小纸条模态（结果页可右滑下一道） -->
         <div id="slipOverlay" class="fixed inset-0 bg-black/50 z-[95] hidden items-center justify-center p-4" style="display: none;">
-            <div id="slipCard" class="bg-[#FAF3E9] max-w-md w-full overflow-hidden shadow-xl border border-[#A8703F]/30" style="display: none;">
-                <div id="slipCardInner" class="p-6 slip-card-inner">
-                    <div class="text-center mb-4 mono text-xs text-[#6B6B6B] tracking-wider">抽到的小纸条</div>
-                    <p id="slipText" class="text-[#2C2C2C] mb-6 leading-relaxed text-center min-h-[3rem]"></p>
-                    <div id="slipButtons" class="flex gap-3 justify-center mb-4">
-                        <button type="button" id="slipGuessTrue" class="px-5 py-2 border border-[#A8703F] text-[#A8703F] hover:bg-[#A8703F]/10 transition-colors">真</button>
-                        <button type="button" id="slipGuessFalse" class="px-5 py-2 border border-[#5C614D] text-[#5C614D] hover:bg-[#5C614D]/10 transition-colors">假</button>
+            <div id="slipCard" class="bg-[#FAF3E9] max-w-md w-full min-h-[340px] flex flex-col overflow-hidden shadow-xl border border-[#A8703F]/30 relative" style="display: none;">
+                <div id="slipCardInner" class="p-6 slip-card-inner flex flex-col flex-1 min-h-0">
+                    <div class="flex items-center justify-between pb-3 mb-4 border-b border-[#A8703F]/20 flex-shrink-0">
+                        <span class="mono text-sm font-medium text-[#2C2C2C] tracking-wider">抽到的小纸条</span>
+                        <button type="button" id="slipHeaderClose" class="w-8 h-8 flex items-center justify-center text-[#6B6B6B] hover:text-[#A8703F] hover:bg-[#A8703F]/10 transition-colors text-xl leading-none" title="关闭">×</button>
                     </div>
-                    <div id="slipResult" class="text-center text-sm py-4 hidden"></div>
-                    <div id="slipResultActions" class="flex gap-3 mt-4 hidden">
-                        <button type="button" id="slipNext" class="flex-1 py-2.5 border-2 border-[#A8703F] text-[#A8703F] hover:bg-[#A8703F]/10 font-medium transition-colors flex items-center justify-center gap-2">再抽一条 <span>→</span></button>
-                        <button type="button" id="slipClose" class="px-5 py-2.5 border border-[#A8703F]/40 text-[#4A4A4A] hover:bg-[#A8703F]/10 transition-colors">关闭</button>
+                    <div class="flex-1 flex flex-col justify-center min-h-0">
+                        <p id="slipText" class="text-[#2C2C2C] mb-4 leading-relaxed text-center min-h-[3rem]"></p>
+                        <div id="slipButtons" class="flex gap-3 justify-center mb-2">
+                            <button type="button" id="slipGuessTrue" class="px-5 py-2 border border-[#A8703F] text-[#A8703F] hover:bg-[#A8703F]/10 transition-colors">真</button>
+                            <button type="button" id="slipGuessFalse" class="px-5 py-2 border border-[#5C614D] text-[#5C614D] hover:bg-[#5C614D]/10 transition-colors">假</button>
+                        </div>
+                        <div id="slipResult" class="text-center text-sm py-3 hidden"></div>
+                        <div id="slipResultActions" class="mt-3 hidden">
+                            <button type="button" id="slipNext" class="w-full py-2.5 border-2 border-[#A8703F] text-[#A8703F] hover:bg-[#A8703F]/10 font-medium transition-colors flex items-center justify-center gap-2">再抽一条 <span>→</span></button>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -2862,28 +3050,6 @@ h1 {
             });
         }
 
-        // Comparison slider（已移除 DOM，保留空逻辑避免报错）
-        const slider = document.getElementById('comparisonSlider');
-        const afterView = document.getElementById('afterView');
-        if (slider && afterView) {
-            let isDragging = false;
-            const container = slider.parentElement;
-            function updateSlider(x) {
-                const rect = container.getBoundingClientRect();
-                const position = Math.max(0, Math.min(x - rect.left, rect.width));
-                const percentage = (position / rect.width) * 100;
-                slider.style.left = percentage + '%';
-                afterView.style.left = percentage + '%';
-                afterView.style.clipPath = `inset(0 0 0 ${percentage}%)`;
-            }
-            slider.addEventListener('mousedown', (e) => { isDragging = true; e.preventDefault(); });
-            document.addEventListener('mousemove', (e) => { if (isDragging) updateSlider(e.clientX); });
-            document.addEventListener('mouseup', () => { isDragging = false; });
-            slider.addEventListener('touchstart', (e) => { isDragging = true; e.preventDefault(); });
-            document.addEventListener('touchmove', (e) => { if (isDragging) updateSlider(e.touches[0].clientX); });
-            document.addEventListener('touchend', () => { isDragging = false; });
-        }
-
         // Scroll reveal
         const revealElements = document.querySelectorAll('.reveal');
         
@@ -2909,8 +3075,10 @@ h1 {
         // Smooth scroll for anchor links
         document.querySelectorAll('a[href^="#"]').forEach(anchor => {
             anchor.addEventListener('click', function (e) {
+                const href = this.getAttribute('href');
+                if (href === '#') return;
                 e.preventDefault();
-                const target = document.querySelector(this.getAttribute('href'));
+                const target = document.querySelector(href);
                 if (target) {
                     target.scrollIntoView({ behavior: 'smooth', block: 'start' });
                 }
@@ -2948,88 +3116,58 @@ h1 {
             });
         });
 
-        // 全链路搜索项目：图表 Tab 切换
-        const chartArea = document.getElementById('project1ChartArea');
-        if (chartArea) {
-            chartArea.querySelectorAll('.chart-tab').forEach(tab => {
+        // Tab 切换通用逻辑
+        function initTabSwitch(containerId, panelSelector) {
+            const container = document.getElementById(containerId);
+            if (!container) return;
+            container.querySelectorAll('.chart-tab').forEach(tab => {
                 tab.addEventListener('click', () => {
-                    const chartId = tab.getAttribute('data-chart');
-                    if (!chartId) return;
-                    chartArea.querySelectorAll('.chart-tab').forEach(t => t.classList.remove('active'));
+                    const targetId = tab.getAttribute('data-chart');
+                    if (!targetId) return;
+                    container.querySelectorAll('.chart-tab').forEach(t => t.classList.remove('active'));
                     tab.classList.add('active');
-                    chartArea.querySelectorAll('.chart-panel').forEach(p => p.classList.remove('show'));
-                    const panel = document.getElementById(chartId);
+                    container.querySelectorAll(panelSelector).forEach(p => p.classList.remove('show'));
+                    const panel = document.getElementById(targetId);
                     if (panel) panel.classList.add('show');
                 });
             });
         }
+        initTabSwitch('project1ChartArea', '.chart-panel');
+        initTabSwitch('baiduSearchChartArea', '.chart-panel');
+        initTabSwitch('ddxStoryArea', '.ddx-panel');
+        initTabSwitch('gaokaoAgentArea', '.ddx-panel');
+        initTabSwitch('evalArchArea', '.chart-panel');
 
-        // 百度搜索：垂搜汉字/知识点 Tab 切换
-        const baiduSearchArea = document.getElementById('baiduSearchChartArea');
-        if (baiduSearchArea) {
-            baiduSearchArea.querySelectorAll('.chart-tab').forEach(tab => {
-                tab.addEventListener('click', () => {
-                    const chartId = tab.getAttribute('data-chart');
-                    if (!chartId) return;
-                    baiduSearchArea.querySelectorAll('.chart-tab').forEach(t => t.classList.remove('active'));
-                    tab.classList.add('active');
-                    baiduSearchArea.querySelectorAll('.chart-panel').forEach(p => p.classList.remove('show'));
-                    const panel = document.getElementById(chartId);
-                    if (panel) panel.classList.add('show');
+        // 文本 SOP 流程图：悬停/点击节点展开详情卡片
+        (function() {
+            const panel = document.getElementById('sop-detail-panel');
+            const content = document.getElementById('sop-detail-content');
+            if (!panel || !content) return;
+            let hoverTimer = null;
+            document.querySelectorAll('.sop-node').forEach(node => {
+                const id = node.getAttribute('data-sop');
+                const tmpl = document.getElementById('sop-detail-' + id);
+                if (!tmpl) return;
+                const show = () => {
+                    clearTimeout(hoverTimer);
+                    content.innerHTML = tmpl.innerHTML;
+                    panel.classList.remove('hidden');
+                };
+                const hide = () => {
+                    hoverTimer = setTimeout(() => panel.classList.add('hidden'), 150);
+                };
+                node.addEventListener('mouseenter', show);
+                node.addEventListener('mouseleave', hide);
+                node.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    if (panel.classList.contains('hidden') || content.innerHTML !== tmpl.innerHTML) {
+                        show();
+                    } else {
+                        panel.classList.add('hidden');
+                    }
                 });
             });
-        }
-
-        // 「逗逗小滴」故事线 Tab 切换
-        const ddxArea = document.getElementById('ddxStoryArea');
-        if (ddxArea) {
-            ddxArea.querySelectorAll('.chart-tab').forEach(tab => {
-                tab.addEventListener('click', () => {
-                    const sceneId = tab.getAttribute('data-chart');
-                    if (!sceneId) return;
-                    ddxArea.querySelectorAll('.chart-tab').forEach(t => t.classList.remove('active'));
-                    tab.classList.add('active');
-                    ddxArea.querySelectorAll('.ddx-panel').forEach(p => p.classList.remove('show'));
-                    const panel = document.getElementById(sceneId);
-                    if (panel) panel.classList.add('show');
-                });
-            });
-        }
-
-        // 高考 Agent：架构设计 / 产品视角 Tab 切换
-        const gaokaoArea = document.getElementById('gaokaoAgentArea');
-        if (gaokaoArea) {
-            gaokaoArea.querySelectorAll('.chart-tab').forEach(tab => {
-                tab.addEventListener('click', () => {
-                    const panelId = tab.getAttribute('data-chart');
-                    if (!panelId) return;
-                    gaokaoArea.querySelectorAll('.chart-tab').forEach(t => t.classList.remove('active'));
-                    tab.classList.add('active');
-                    gaokaoArea.querySelectorAll('.ddx-panel').forEach(p => p.classList.remove('show'));
-                    const panel = document.getElementById(panelId);
-                    if (panel) panel.classList.add('show');
-                });
-            });
-        }
-
-        // AIGC 覆盖 PV 折线图：点击数据点在右侧展示先验 GSB、后验结论
-        const pvPlaceholder = document.getElementById('pv-detail-placeholder');
-        document.querySelectorAll('.pv-chart-point').forEach(point => {
-            point.addEventListener('click', function() {
-                const id = this.getAttribute('data-expand');
-                if (!id) return;
-                const expandRow = document.getElementById(id);
-                if (!expandRow) return;
-                const wasHidden = expandRow.classList.contains('hidden');
-                document.querySelectorAll('.pv-expand-row').forEach(r => r.classList.add('hidden'));
-                if (wasHidden) {
-                    expandRow.classList.remove('hidden');
-                    if (pvPlaceholder) pvPlaceholder.classList.add('hidden');
-                } else {
-                    if (pvPlaceholder) pvPlaceholder.classList.remove('hidden');
-                }
-            });
-        });
+        })();
 
         // 「逗逗小滴」对话示例 Tab 切换
         document.querySelectorAll('.dialogue-tab').forEach(tab => {
@@ -3071,39 +3209,39 @@ h1 {
 
         // 抽小纸条
         const SLIP_STATEMENTS = [
-            { text: '毕业时做社会实验，对60+人做人均2小时+的访谈，写了20万字', result: true },
-            { text: '开发过跑酷游戏', result: true },
-            { text: '在线上社区内容贡献了3年', result: true },
-            { text: '打有氧拳击', result: true },
-            { text: '热爱拉丁舞，成人后又捡了起来', result: true },
-            { text: '在晋江写了30多万字小说最终发现自己没啥天赋', result: true },
-            { text: '家里养了2只狗5只猫', result: true },
-            { text: '给身价千亿的企业家做过秘书（论坛志愿者）', result: true },
-            { text: '跑过全程马拉松', result: false },
-            { text: '擅长弹钢琴', result: false },
-            { text: '在沙漠里骑过骆驼', result: false },
-            { text: '大学时组过乐队当过主唱', result: false },
-            { text: '曾经连续一周每天只睡4小时赶论文', result: true },
-            { text: '会做咖啡拉花', result: false },
-            { text: '读过《百年孤独》三遍以上', result: true },
-            { text: '养过多肉植物但总养死', result: false },
-            { text: '在知乎写过破万赞的回答', result: false },
-            { text: '小时候学过书法', result: false },
-            { text: '去过10个以上国家', result: false },
-            { text: '能背出圆周率后50位', result: false },
-            { text: '有早起跑步的习惯', result: false },
-            { text: '玩过《文明》一局打到天亮', result: true },
-            { text: '给开源项目提交过 PR', result: false },
-            { text: '做过播客主播', result: true },
-            { text: '收藏了一柜子盲盒', result: false },
-            { text: '会一点日语', result: true },
-            { text: '曾经在图书馆占座时和人吵过架', result: false },
-            { text: '曾经在排队时和插队的人吵过架', result: true },
-            { text: '考过咖啡师证', result: false },
-            { text: '追过某部剧连看24集不睡觉', result: false },
-            { text: '在豆瓣标记过超过500本书', result: false },
-            { text: '参加过线下脱口秀开放麦', result: false },
-            { text: '家里有一整面墙的书', result: true },
+            { text: '毕业时做社会实验，对60+人做人均2小时+的访谈，写了20万字', result: true, rightText: '猜对了 ✓ 访谈记录真的有20万字', wrongText: '猜错了 ~ 真的做过' },
+            { text: '开发过跑酷游戏', result: true, rightText: '猜对了 ✓ 感谢roblox', wrongText: '猜错了 ~ 确实做过' },
+            { text: '在线上社区内容贡献了3年', result: false, rightText: '猜对了 ✓ 实际贡献了6年', wrongText: '猜错了 ~ 实际贡献了6年' },
+            { text: '打有氧拳击', result: true, rightText: '猜对了 ✓ 每周打卡', wrongText: '猜错了 ~ 在打' },
+            { text: '热爱拉丁舞，成人后又捡了起来', result: true, rightText: '猜对了 ✓ ', wrongText: '猜错了 ~ 真的在跳' },
+            { text: '在晋江写了30多万字小说最终发现自己没啥天赋', result: true, rightText: '猜对了 ✓ 30万字·认清现实', wrongText: '猜错了 ~ 真有写过' },
+            { text: '家里养了2只狗5只猫', result: true, rightText: '猜对了 ✓ 七条命', wrongText: '猜错了 ~ 是真的' },
+            { text: '给身价千亿的企业家做过秘书', result: true, rightText: '猜对了 ✓ 论坛志愿者也算', wrongText: '猜错了 ~ 论坛志愿者也算' },
+            { text: '跑过全程马拉松', result: false, rightText: '猜对了 ✓', wrongText: '其实没跑过，只徒步过30KM' },
+            { text: '擅长弹钢琴', result: false, rightText: '猜对了 ✓', wrongText: '会弹一点，完全不擅长' },
+            { text: '在沙漠里骑过骆驼', result: false, rightText: '猜对了 ✓', wrongText: '没骑过，想去' },
+            { text: '大学时组过乐队当过主唱', result: false, rightText: '猜对了 ✓', wrongText: '没组过乐队，只在 KTV 吼过' },
+            { text: '曾经连续一周每天只睡4小时赶论文', result: false, rightText: '猜对了 ✓ 保持每天8小时睡眠', wrongText: '猜错了 ~ 保持每天8小时睡眠' },
+            { text: '会做咖啡拉花', result: false, rightText: '猜对了 ✓', wrongText: '只会喝，不会拉' },
+            { text: '读过《百年孤独》三遍以上', result: true, rightText: '猜对了 ✓ 人名太绕所以多读了几遍', wrongText: '猜错了 ~ 读过' },
+            { text: '养过多肉植物但总养死', result: false, rightText: '猜对了 ✓', wrongText: '没养过，自知养不活' },
+            { text: '在知乎写过破万赞的回答', result: false, rightText: '猜对了 ✓', wrongText: '最高几千赞，万赞还在路上' },
+            { text: '小时候学过书法', result: false, rightText: '猜对了 ✓', wrongText: '没学过，全靠妈妈教' },
+            { text: '去过10个以上国家', result: false, rightText: '猜对了 ✓', wrongText: '还没到 10 个，继续努力' },
+            { text: '能背出圆周率后50位', result: false, rightText: '猜对了 ✓', wrongText: '只能背到 3.1415926...' },
+            { text: '有早起跑步的习惯', result: false, rightText: '猜对了 ✓', wrongText: '早起没有，跑步也没有' },
+            { text: '玩过《文明》一局打到天亮', result: true, rightText: '猜对了 ✓ 再一回合就睡', wrongText: '猜错了 ~ 真打过' },
+            { text: '给开源项目提交过 PR', result: false, rightText: '猜对了 ✓', wrongText: '用过开源，还没贡献过' },
+            { text: '做过播客主播', result: true, rightText: '猜对了 ✓ 做过几期朋友的嘉宾', wrongText: '猜错了 ~ 真做过' },
+            { text: '收藏了一柜子盲盒', result: false, rightText: '猜对了 ✓', wrongText: '没入盲盒坑' },
+            { text: '会一点日语', result: true, rightText: '猜对了 ✓ 五十音 + 简单会话', wrongText: '猜错了 ~ 会一点' },
+            { text: '曾经在图书馆占座时和人吵过架', result: false, rightText: '猜对了 ✓', wrongText: '没吵过，怂' },
+            { text: '曾经在排队时和插队的人吵过架', result: true, rightText: '猜对了 ✓ 那次没忍住', wrongText: '猜错了 ~ 真吵过' },
+            { text: '考过咖啡师证', result: false, rightText: '猜对了 ✓', wrongText: '没考过，想学' },
+            { text: '追过某部剧连看24集不睡觉', result: true, rightText: '猜对了 ✓ 最后1集是2点睡的', wrongText: '最多熬到 3 点，没 24 集' },
+            { text: '在豆瓣标记过超过500本书', result: false, rightText: '猜对了 ✓', wrongText: '还没 500 本，慢慢攒' },
+            { text: '参加过线下脱口秀开放麦', result: false, rightText: '猜对了 ✓', wrongText: '没参加过，想看' },
+            { text: '家里有一整面墙的书', result: true, rightText: '猜对了 ✓ 确实有一墙', wrongText: '猜错了 ~ 真有' },
         ];
         (function() {
             const overlay = document.getElementById('slipOverlay');
@@ -3113,7 +3251,7 @@ h1 {
             const slipButtons = document.getElementById('slipButtons');
             const slipResult = document.getElementById('slipResult');
             const slipResultActions = document.getElementById('slipResultActions');
-            const slipClose = document.getElementById('slipClose');
+            const slipHeaderClose = document.getElementById('slipHeaderClose');
             const slipNext = document.getElementById('slipNext');
             const trigger = document.getElementById('slipBoxTrigger');
             const guessTrue = document.getElementById('slipGuessTrue');
@@ -3132,18 +3270,20 @@ h1 {
                 slipResultActions.classList.add('hidden');
                 slipButtons.classList.remove('hidden');
                 if (cardInner) {
-                    cardInner.classList.remove('slip-slide-out', 'slip-slide-in');
+                    cardInner.classList.remove('slip-slide-out');
                 }
             }
             function openSlip() {
                 setSlipContent(pickRandom());
                 overlay.style.display = 'flex';
-                card.style.display = 'block';
+                card.style.display = 'flex';
             }
             function showResult(guess) {
                 const actual = currentSlip.result;
                 const correct = (guess === 'true' && actual) || (guess === 'false' && !actual);
-                slipResult.innerHTML = '实际是：<strong>' + (actual ? '真' : '假') + '</strong><br>' + (correct ? '猜对了 ✓' : '猜错了 ~');
+                const rightMsg = currentSlip.rightText || '猜对了 ✓';
+                const wrongMsg = currentSlip.wrongText || '猜错了 ~';
+                slipResult.innerHTML = '实际是：<strong>' + (actual ? '真' : '假') + '</strong><br>' + (correct ? rightMsg : wrongMsg);
                 slipResult.classList.remove('hidden');
                 slipButtons.classList.add('hidden');
                 slipResultActions.classList.remove('hidden');
@@ -3153,14 +3293,11 @@ h1 {
                 cardInner.classList.add('slip-slide-out');
                 setTimeout(function() {
                     setSlipContent(pickRandom());
+                    cardInner.style.transition = 'none';
                     cardInner.classList.remove('slip-slide-out');
-                    cardInner.classList.add('slip-slide-in');
-                    requestAnimationFrame(function() {
-                        requestAnimationFrame(function() {
-                            cardInner.classList.remove('slip-slide-in');
-                        });
-                    });
-                }, 280);
+                    cardInner.offsetHeight; // force reflow
+                    cardInner.style.transition = '';
+                }, 300);
             }
             function closeSlip() {
                 overlay.style.display = 'none';
@@ -3171,7 +3308,7 @@ h1 {
             document.getElementById('slipKnowMore')?.addEventListener('click', openSlip);
             guessTrue?.addEventListener('click', () => showResult('true'));
             guessFalse?.addEventListener('click', () => showResult('false'));
-            slipClose?.addEventListener('click', closeSlip);
+            slipHeaderClose?.addEventListener('click', closeSlip);
             slipNext?.addEventListener('click', nextSlip);
             overlay?.addEventListener('click', (e) => { if (e.target === overlay) closeSlip(); });
 
@@ -3187,40 +3324,41 @@ h1 {
 
         // Floating sidebar navigation
         const floatingSidebar = document.getElementById('floatingSidebar');
-        const sidebarItems = floatingSidebar.querySelectorAll('.sidebar-item');
-        const sections = document.querySelectorAll('section[id]');
+        if (floatingSidebar) {
+            const sidebarItems = floatingSidebar.querySelectorAll('.sidebar-item');
+            const sections = document.querySelectorAll('section[id]');
 
-        function updateActiveSidebarItem() {
-            let currentSection = '';
-            const scrollPosition = window.scrollY + 200;
+            function updateActiveSidebarItem() {
+                let currentSection = '';
+                const scrollPosition = window.scrollY + 200;
 
-            sections.forEach(section => {
-                const sectionTop = section.offsetTop;
-                const sectionHeight = section.offsetHeight;
-                if (scrollPosition >= sectionTop && scrollPosition < sectionTop + sectionHeight) {
-                    currentSection = section.getAttribute('id');
-                }
-            });
+                sections.forEach(section => {
+                    const sectionTop = section.offsetTop;
+                    const sectionHeight = section.offsetHeight;
+                    if (scrollPosition >= sectionTop && scrollPosition < sectionTop + sectionHeight) {
+                        currentSection = section.getAttribute('id');
+                    }
+                });
 
-            sidebarItems.forEach(item => {
-                const sectionId = item.getAttribute('data-section');
-                if (sectionId === currentSection) {
-                    item.classList.add('active');
+                sidebarItems.forEach(item => {
+                    const sectionId = item.getAttribute('data-section');
+                    if (sectionId === currentSection) {
+                        item.classList.add('active');
+                    } else {
+                        item.classList.remove('active');
+                    }
+                });
+
+                if (window.scrollY > 300) {
+                    floatingSidebar.classList.add('visible');
                 } else {
-                    item.classList.remove('active');
+                    floatingSidebar.classList.remove('visible');
                 }
-            });
-
-            // Show/hide sidebar based on scroll position
-            if (window.scrollY > 300) {
-                floatingSidebar.classList.add('visible');
-            } else {
-                floatingSidebar.classList.remove('visible');
             }
-        }
 
-        window.addEventListener('scroll', updateActiveSidebarItem);
-        updateActiveSidebarItem();
+            window.addEventListener('scroll', updateActiveSidebarItem);
+            updateActiveSidebarItem();
+        }
 
         // Print styles
         window.addEventListener('beforeprint', () => {
